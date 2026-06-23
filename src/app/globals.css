@@ -11,6 +11,11 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Offset anchor scroll targets so sticky header doesn't overlap */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
 body {
   background: #030712;
   color: #f9fafb;
