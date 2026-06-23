@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Building2, Star, Globe, Zap, ArrowRight, Loader2, Lock } from 'lucide-react';
 import type { ScanFormData, YesNo, YesNoUnknown } from '@/lib/types';
 import { BUSINESS_CATEGORIES } from '@/lib/constants';
+import { translations } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
 
 const STORAGE_KEY = 'ai_visibility_scan_form';
 
@@ -44,21 +46,10 @@ function SectionHeader({ icon: Icon, label, title }: { icon: React.ElementType; 
 }
 
 function TextInput({
-  label,
-  placeholder,
-  hint,
-  value,
-  onChange,
-  required,
-  type = 'text',
+  label, placeholder, hint, value, onChange, required, type = 'text',
 }: {
-  label: string;
-  placeholder: string;
-  hint?: string;
-  value: string;
-  onChange: (v: string) => void;
-  required?: boolean;
-  type?: string;
+  label: string; placeholder: string; hint?: string; value: string;
+  onChange: (v: string) => void; required?: boolean; type?: string;
 }) {
   return (
     <div>
@@ -78,19 +69,10 @@ function TextInput({
 }
 
 function SelectInput({
-  label,
-  hint,
-  value,
-  onChange,
-  options,
-  required,
+  label, hint, value, onChange, options, placeholder, required,
 }: {
-  label: string;
-  hint?: string;
-  value: string;
-  onChange: (v: string) => void;
-  options: string[];
-  required?: boolean;
+  label: string; hint?: string; value: string; onChange: (v: string) => void;
+  options: string[]; placeholder: string; required?: boolean;
 }) {
   return (
     <div>
@@ -102,7 +84,7 @@ function SelectInput({
         onChange={(e) => onChange(e.target.value)}
         className="w-full bg-slate-900/60 border border-slate-700 hover:border-slate-600 focus:border-emerald-500 focus:outline-none rounded-xl px-4 py-3 text-white transition-colors text-sm appearance-none"
       >
-        <option value="" className="bg-slate-900">Seleccioná una categoría…</option>
+        <option value="" className="bg-slate-900">{placeholder}</option>
         {options.map((opt) => (
           <option key={opt} value={opt} className="bg-slate-900">{opt}</option>
         ))}
@@ -113,15 +95,10 @@ function SelectInput({
 }
 
 function YesNoToggle({
-  label,
-  hint,
-  value,
-  onChange,
+  label, hint, value, onChange, yesLabel, noLabel,
 }: {
-  label: string;
-  hint?: string;
-  value: YesNo | '';
-  onChange: (v: YesNo) => void;
+  label: string; hint?: string; value: YesNo | ''; onChange: (v: YesNo) => void;
+  yesLabel: string; noLabel: string;
 }) {
   return (
     <div>
@@ -140,7 +117,7 @@ function YesNoToggle({
                 : 'bg-slate-900/60 border-slate-700 text-slate-400 hover:border-slate-500'
             }`}
           >
-            {opt === 'yes' ? 'Sí' : 'No'}
+            {opt === 'yes' ? yesLabel : noLabel}
           </button>
         ))}
       </div>
@@ -150,20 +127,15 @@ function YesNoToggle({
 }
 
 function ThreeWayToggle({
-  label,
-  hint,
-  value,
-  onChange,
+  label, hint, value, onChange, yesLabel, noLabel, unknownLabel,
 }: {
-  label: string;
-  hint?: string;
-  value: YesNoUnknown | '';
-  onChange: (v: YesNoUnknown) => void;
+  label: string; hint?: string; value: YesNoUnknown | ''; onChange: (v: YesNoUnknown) => void;
+  yesLabel: string; noLabel: string; unknownLabel: string;
 }) {
   const opts: { value: YesNoUnknown; label: string }[] = [
-    { value: 'yes', label: 'Sí' },
-    { value: 'no', label: 'No' },
-    { value: 'unknown', label: 'No sé' },
+    { value: 'yes', label: yesLabel },
+    { value: 'no', label: noLabel },
+    { value: 'unknown', label: unknownLabel },
   ];
 
   return (
@@ -195,14 +167,18 @@ function ThreeWayToggle({
 }
 
 interface ScannerFormProps {
+  language: Language;
   cancelledPayment?: boolean;
 }
 
-export default function ScannerForm({ cancelledPayment }: ScannerFormProps) {
+export default function ScannerForm({ language, cancelledPayment }: ScannerFormProps) {
   const [form, setForm] = useState<ScanFormData>(defaultForm);
   const [errors, setErrors] = useState<Partial<Record<keyof ScanFormData, string>>>({});
   const [loading, setLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState('');
+
+  const t = translations[language].scanner;
+  const f = t.fields;
 
   function set<K extends keyof ScanFormData>(key: K, value: ScanFormData[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -211,9 +187,9 @@ export default function ScannerForm({ cancelledPayment }: ScannerFormProps) {
 
   function validate(): boolean {
     const newErrors: Partial<Record<keyof ScanFormData, string>> = {};
-    if (!form.businessName.trim()) newErrors.businessName = 'El nombre del negocio es requerido.';
-    if (!form.city.trim()) newErrors.city = 'La ciudad es requerida.';
-    if (!form.category) newErrors.category = 'Por favor seleccioná una categoría.';
+    if (!form.businessName.trim()) newErrors.businessName = t.errors.businessName;
+    if (!form.city.trim()) newErrors.city = t.errors.city;
+    if (!form.category) newErrors.category = t.errors.category;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
@@ -221,14 +197,13 @@ export default function ScannerForm({ cancelledPayment }: ScannerFormProps) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
-
     setLoading(true);
     setCheckoutError('');
 
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(form));
     } catch {
-      // localStorage unavailable — proceed anyway, will show error post-payment if missing
+      // localStorage unavailable — proceed anyway
     }
 
     try {
@@ -249,11 +224,9 @@ export default function ScannerForm({ cancelledPayment }: ScannerFormProps) {
         return;
       }
 
-      setCheckoutError(
-        data.error ?? 'No se pudo iniciar el pago. Por favor intentá de nuevo.'
-      );
+      setCheckoutError(data.error ?? t.checkoutError);
     } catch {
-      setCheckoutError('Error de conexión. Por favor intentá de nuevo.');
+      setCheckoutError(t.connectionError);
     }
 
     setLoading(false);
@@ -267,199 +240,211 @@ export default function ScannerForm({ cancelledPayment }: ScannerFormProps) {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">
-            Escaneo de Visibilidad en Recomendaciones de IA
-          </p>
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">{t.eyebrow}</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Completá el formulario y{' '}
-            <span className="gradient-text">desbloqueá tu resultado</span>
+            {t.headline1}{' '}
+            <span className="gradient-text">{t.headlineHighlight}</span>
           </h2>
-          <p className="text-slate-400 text-lg">
-            Completá el formulario y desbloqueá tu resultado por $30.
-          </p>
+          <p className="text-slate-400 text-lg">{t.subheadline}</p>
         </div>
 
         {cancelledPayment && (
           <div className="mb-8 glass rounded-2xl px-5 py-4 border border-yellow-500/20 bg-yellow-500/5 flex items-start gap-3">
             <span className="text-yellow-400 text-lg leading-none mt-0.5">⚠</span>
-            <p className="text-yellow-300 text-sm leading-relaxed">
-              El pago fue cancelado. Podés intentarlo de nuevo cuando querás.
-            </p>
+            <p className="text-yellow-300 text-sm leading-relaxed">{t.cancelledNotice}</p>
           </div>
         )}
 
         <form onSubmit={handleSubmit} noValidate>
           <div className="space-y-6">
-            {/* Section A: Business Basics */}
+            {/* Section A */}
             <div className="glass rounded-2xl p-6 sm:p-8">
-              <SectionHeader icon={Building2} label="Sección A" title="Datos del negocio" />
+              <SectionHeader icon={Building2} label={t.sections.a.label} title={t.sections.a.title} />
               <div className="grid sm:grid-cols-2 gap-5">
                 <div className="sm:col-span-2">
                   <TextInput
-                    label="Nombre del negocio"
-                    placeholder="ej. Escazú Dental Studio"
+                    label={f.businessName.label}
+                    placeholder={f.businessName.placeholder}
+                    hint={f.businessName.hint}
                     value={form.businessName}
                     onChange={(v) => set('businessName', v)}
                     required
-                    hint="El nombre exacto que los clientes ven en Google."
                   />
-                  {errors.businessName && (
-                    <p className="text-rose-400 text-xs mt-1">{errors.businessName}</p>
-                  )}
+                  {errors.businessName && <p className="text-rose-400 text-xs mt-1">{errors.businessName}</p>}
                 </div>
                 <div>
                   <TextInput
-                    label="Ciudad / Mercado"
-                    placeholder="ej. San José, Costa Rica"
+                    label={f.city.label}
+                    placeholder={f.city.placeholder}
+                    hint={f.city.hint}
                     value={form.city}
                     onChange={(v) => set('city', v)}
                     required
-                    hint="Ciudad principal donde atendés clientes."
                   />
-                  {errors.city && (
-                    <p className="text-rose-400 text-xs mt-1">{errors.city}</p>
-                  )}
+                  {errors.city && <p className="text-rose-400 text-xs mt-1">{errors.city}</p>}
                 </div>
                 <div>
                   <SelectInput
-                    label="Categoría del negocio"
+                    label={f.category.label}
+                    placeholder={f.category.placeholder}
+                    hint={f.category.hint}
                     value={form.category}
                     onChange={(v) => set('category', v)}
                     options={BUSINESS_CATEGORIES}
                     required
-                    hint="Elegí la categoría que mejor representa tu negocio."
                   />
-                  {errors.category && (
-                    <p className="text-rose-400 text-xs mt-1">{errors.category}</p>
-                  )}
+                  {errors.category && <p className="text-rose-400 text-xs mt-1">{errors.category}</p>}
                 </div>
                 <TextInput
-                  label="URL del sitio web"
-                  placeholder="https://tunegocio.com"
+                  label={f.websiteUrl.label}
+                  placeholder={f.websiteUrl.placeholder}
+                  hint={f.websiteUrl.hint}
                   value={form.websiteUrl}
                   onChange={(v) => set('websiteUrl', v)}
                   type="url"
-                  hint="Dejá vacío si no tenés sitio web."
                 />
                 <TextInput
-                  label="URL de Google Business Profile"
-                  placeholder="https://g.page/tunegocio"
+                  label={f.googleBusinessUrl.label}
+                  placeholder={f.googleBusinessUrl.placeholder}
+                  hint={f.googleBusinessUrl.hint}
                   value={form.googleBusinessUrl}
                   onChange={(v) => set('googleBusinessUrl', v)}
                   type="url"
-                  hint="Tu URL de Google Maps / Google Business."
                 />
                 <TextInput
-                  label="WhatsApp o link de contacto"
-                  placeholder="https://wa.me/1234567890"
+                  label={f.contactLink.label}
+                  placeholder={f.contactLink.placeholder}
+                  hint={f.contactLink.hint}
                   value={form.contactLink}
                   onChange={(v) => set('contactLink', v)}
-                  hint="WhatsApp, link de teléfono o URL de contacto directo."
                 />
               </div>
             </div>
 
-            {/* Section B: Trust Signals */}
+            {/* Section B */}
             <div className="glass rounded-2xl p-6 sm:p-8">
-              <SectionHeader icon={Star} label="Sección B" title="Señales de confianza" />
+              <SectionHeader icon={Star} label={t.sections.b.label} title={t.sections.b.title} />
               <div className="grid sm:grid-cols-2 gap-5">
                 <TextInput
-                  label="Cantidad de reseñas de Google"
-                  placeholder="ej. 47"
+                  label={f.reviewCount.label}
+                  placeholder={f.reviewCount.placeholder}
+                  hint={f.reviewCount.hint}
                   value={form.reviewCount}
                   onChange={(v) => set('reviewCount', v)}
                   type="number"
-                  hint="Cantidad aproximada en tu Google Business Profile."
                 />
                 <TextInput
-                  label="Calificación promedio"
-                  placeholder="ej. 4.7"
+                  label={f.averageRating.label}
+                  placeholder={f.averageRating.placeholder}
+                  hint={f.averageRating.hint}
                   value={form.averageRating}
                   onChange={(v) => set('averageRating', v)}
                   type="number"
-                  hint="Tu calificación actual en Google (sobre 5)."
                 />
                 <YesNoToggle
-                  label="¿Mostrás testimonios reales de clientes en tu sitio web?"
+                  label={f.hasTestimonials.label}
+                  hint={f.hasTestimonials.hint}
                   value={form.hasTestimonials}
                   onChange={(v) => set('hasTestimonials', v)}
-                  hint="Testimonios escritos o en video de clientes con nombre."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="¿Tenés fotos del local o del equipo en tu sitio web?"
+                  label={f.hasLocalPhotos.label}
+                  hint={f.hasLocalPhotos.hint}
                   value={form.hasLocalPhotos}
                   onChange={(v) => set('hasLocalPhotos', v)}
-                  hint="Fotos reales de tu espacio, equipo o trabajo — no imágenes de stock."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <div className="sm:col-span-2">
                   <YesNoToggle
-                    label="¿Tenés prueba social de plataformas de terceros?"
+                    label={f.hasThirdPartyProof.label}
+                    hint={f.hasThirdPartyProof.hint}
                     value={form.hasThirdPartyProof}
                     onChange={(v) => set('hasThirdPartyProof', v)}
-                    hint="Yelp, Facebook, Houzz, TripAdvisor u otros directorios del rubro."
+                    yesLabel={t.yesLabel}
+                    noLabel={t.noLabel}
                   />
                 </div>
               </div>
             </div>
 
-            {/* Section C: Local Search Signals */}
+            {/* Section C */}
             <div className="glass rounded-2xl p-6 sm:p-8">
-              <SectionHeader icon={Globe} label="Sección C" title="Señales de búsqueda local" />
+              <SectionHeader icon={Globe} label={t.sections.c.label} title={t.sections.c.title} />
               <div className="grid sm:grid-cols-2 gap-5">
                 <YesNoToggle
-                  label="¿Tenés una página clara de servicios?"
+                  label={f.hasServicesPage.label}
+                  hint={f.hasServicesPage.hint}
                   value={form.hasServicesPage}
                   onChange={(v) => set('hasServicesPage', v)}
-                  hint="Una página que lista y explica claramente qué ofrecés."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="¿Tenés páginas separadas para cada servicio principal?"
+                  label={f.hasSeparateServicePages.label}
+                  hint={f.hasSeparateServicePages.hint}
                   value={form.hasSeparateServicePages}
                   onChange={(v) => set('hasSeparateServicePages', v)}
-                  hint="Páginas individuales como /blanqueamiento, /reparacion-hvac, /derecho-familiar."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="¿Mencionás claramente tus áreas de servicio?"
+                  label={f.mentionsServiceAreas.label}
+                  hint={f.mentionsServiceAreas.hint}
                   value={form.mentionsServiceAreas}
                   onChange={(v) => set('mentionsServiceAreas', v)}
-                  hint="Barrios, ciudades o regiones donde operás, listados en tu sitio."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="¿Mostrás precios o precios iniciales?"
+                  label={f.showsPricing.label}
+                  hint={f.showsPricing.hint}
                   value={form.showsPricing}
                   onChange={(v) => set('showsPricing', v)}
-                  hint="Incluso rangos de precio reducen la fricción y mejoran la claridad para la IA."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
               </div>
             </div>
 
-            {/* Section D: AI / Agent Readiness */}
+            {/* Section D */}
             <div className="glass rounded-2xl p-6 sm:p-8">
-              <SectionHeader icon={Zap} label="Sección D" title="Preparación para IA" />
+              <SectionHeader icon={Zap} label={t.sections.d.label} title={t.sections.d.title} />
               <div className="grid sm:grid-cols-2 gap-5">
                 <YesNoToggle
-                  label="¿Tenés preguntas frecuentes (FAQs) en tu sitio web?"
+                  label={f.hasFAQs.label}
+                  hint={f.hasFAQs.hint}
                   value={form.hasFAQs}
                   onChange={(v) => set('hasFAQs', v)}
-                  hint="Una sección de FAQ que responde preguntas comunes antes de la compra."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="¿Publicás contenido educativo útil?"
+                  label={f.publishesContent.label}
+                  hint={f.publishesContent.hint}
                   value={form.publishesContent}
                   onChange={(v) => set('publishesContent', v)}
-                  hint="Posts de blog, guías o artículos que ayudan a los clientes a tomar decisiones."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="¿Tenés un CTA de reserva o solicitud de cotización?"
+                  label={f.hasBookingCTA.label}
+                  hint={f.hasBookingCTA.hint}
                   value={form.hasBookingCTA}
                   onChange={(v) => set('hasBookingCTA', v)}
-                  hint="Un botón de acción claro above the fold (reservar, cotizar, contactar)."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <ThreeWayToggle
-                  label="¿Tenés schema / datos estructurados?"
+                  label={f.hasSchema.label}
+                  hint={f.hasSchema.hint}
                   value={form.hasSchema}
                   onChange={(v) => set('hasSchema', v)}
-                  hint="Schema markup de LocalBusiness, Service o FAQ en el código de tu sitio."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
+                  unknownLabel={t.unknownLabel}
                 />
               </div>
             </div>
@@ -479,19 +464,19 @@ export default function ScannerForm({ cancelledPayment }: ScannerFormProps) {
                 {loading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    Redirigiendo al pago…
+                    {t.submitLoading}
                   </>
                 ) : (
                   <>
                     <Lock className="w-5 h-5" />
-                    Ver mi resultado — $30
+                    {t.submitButton}
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                   </>
                 )}
               </button>
               <p className="text-center text-slate-500 text-xs mt-3 flex items-center justify-center gap-1.5">
                 <Lock className="w-3 h-3" />
-                Pago seguro con Stripe. El resultado se muestra después del pago.
+                {t.trustLine}
               </p>
             </div>
           </div>

@@ -2,35 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Menu, X, Sparkles, ArrowRight } from 'lucide-react';
-
-type Language = 'es' | 'en';
-
-interface NavItem {
-  label: string;
-  href: string;
-}
-
-const navItems: Record<Language, NavItem[]> = {
-  es: [
-    { label: 'Inicio', href: '#hero' },
-    { label: 'Cómo funciona', href: '#how-it-works' },
-    { label: 'Escaneo', href: '#scanner' },
-    { label: 'Precios', href: '#pricing' },
-    { label: 'FAQ', href: '#faq' },
-  ],
-  en: [
-    { label: 'Home', href: '#hero' },
-    { label: 'How it works', href: '#how-it-works' },
-    { label: 'Scan', href: '#scanner' },
-    { label: 'Pricing', href: '#pricing' },
-    { label: 'FAQ', href: '#faq' },
-  ],
-};
-
-const copy: Record<Language, { cta: string; logoSub: string }> = {
-  es: { cta: 'Ver mi resultado — $30', logoSub: 'Recomendaciones de IA' },
-  en: { cta: 'View my result — $30', logoSub: 'AI Recommendations' },
-};
+import { translations } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
 
 interface HeaderProps {
   language: Language;
@@ -40,6 +13,7 @@ interface HeaderProps {
 export default function Header({ language, setLanguage }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const t = translations[language].header;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -50,13 +24,8 @@ export default function Header({ language, setLanguage }: HeaderProps) {
   function handleNavClick(href: string) {
     setMobileOpen(false);
     const el = document.querySelector(href);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
-
-  const nav = navItems[language];
-  const { cta, logoSub } = copy[language];
 
   return (
     <>
@@ -73,20 +42,20 @@ export default function Header({ language, setLanguage }: HeaderProps) {
               href="#hero"
               onClick={(e) => { e.preventDefault(); handleNavClick('#hero'); }}
               className="flex items-center gap-2.5 group shrink-0"
-              aria-label="AI Visibility Scan — inicio"
+              aria-label="AI Visibility Scan"
             >
               <div className="w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shrink-0 group-hover:bg-emerald-500/30 transition-colors">
                 <Sparkles className="w-4 h-4 text-emerald-400" />
               </div>
               <div className="leading-none">
                 <div className="text-white font-bold text-sm sm:text-base tracking-tight">AI Visibility Scan</div>
-                <div className="text-emerald-400 text-[10px] font-medium tracking-wide hidden sm:block">{logoSub}</div>
+                <div className="text-emerald-400 text-[10px] font-medium tracking-wide hidden sm:block">{t.logoSub}</div>
               </div>
             </a>
 
             {/* Desktop nav */}
-            <nav className="hidden lg:flex items-center gap-1" aria-label="Navegación principal">
-              {nav.map((item) => (
+            <nav className="hidden lg:flex items-center gap-1" aria-label={language === 'es' ? 'Navegación principal' : 'Main navigation'}>
+              {t.nav.map((item) => (
                 <a
                   key={item.href}
                   href={item.href}
@@ -106,7 +75,7 @@ export default function Header({ language, setLanguage }: HeaderProps) {
                 onClick={(e) => { e.preventDefault(); handleNavClick('#scanner'); }}
                 className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 whitespace-nowrap"
               >
-                {cta}
+                {t.cta}
                 <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </div>
@@ -117,7 +86,9 @@ export default function Header({ language, setLanguage }: HeaderProps) {
               <button
                 onClick={() => setMobileOpen((v) => !v)}
                 className="w-9 h-9 flex items-center justify-center rounded-lg glass border border-white/10 text-slate-300 hover:text-white transition-colors"
-                aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
+                aria-label={mobileOpen
+                  ? (language === 'es' ? 'Cerrar menú' : 'Close menu')
+                  : (language === 'es' ? 'Abrir menú' : 'Open menu')}
                 aria-expanded={mobileOpen}
               >
                 {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -127,9 +98,13 @@ export default function Header({ language, setLanguage }: HeaderProps) {
         </div>
       </header>
 
-      {/* Mobile menu overlay */}
+      {/* Mobile backdrop */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-40 lg:hidden" onClick={() => setMobileOpen(false)} aria-hidden="true" />
+        <div
+          className="fixed inset-0 z-40 lg:hidden"
+          onClick={() => setMobileOpen(false)}
+          aria-hidden="true"
+        />
       )}
 
       {/* Mobile menu panel */}
@@ -140,8 +115,8 @@ export default function Header({ language, setLanguage }: HeaderProps) {
         aria-hidden={!mobileOpen}
       >
         <div className="glass-strong border-b border-white/[0.08] shadow-xl shadow-black/40 mx-4 rounded-2xl overflow-hidden">
-          <nav className="px-4 py-3" aria-label="Menú móvil">
-            {nav.map((item) => (
+          <nav className="px-4 py-3" aria-label={language === 'es' ? 'Menú móvil' : 'Mobile menu'}>
+            {t.nav.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
@@ -158,7 +133,7 @@ export default function Header({ language, setLanguage }: HeaderProps) {
               onClick={(e) => { e.preventDefault(); handleNavClick('#scanner'); }}
               className="flex items-center justify-center gap-2 w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm py-3 rounded-xl transition-all duration-200"
             >
-              {cta}
+              {t.cta}
               <ArrowRight className="w-4 h-4" />
             </a>
           </div>

@@ -1,74 +1,12 @@
 import { Check, Zap, Star, Wrench } from 'lucide-react';
 import { LINKS } from '@/lib/constants';
+import { translations } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
 
-interface Plan {
-  icon: React.ElementType;
-  name: string;
-  price: string;
-  badge: string | null;
-  description: string;
-  features: string[];
-  cta: string;
-  href: string;
-  highlight: boolean;
-  isAnchor?: boolean;
-}
-
-const plans: Plan[] = [
-  {
-    icon: Zap,
-    name: 'Escaneo Inicial',
-    price: '$30',
-    badge: 'Punto de entrada',
-    description: 'Completá el formulario y desbloqueá tu resultado',
-    features: [
-      'Puntaje de Visibilidad en Recomendaciones de IA',
-      'Señales fuertes y débiles',
-      'Prioridades recomendadas',
-      'Plan inicial de mejora',
-      'Resultado desbloqueado después del pago',
-    ],
-    cta: 'Escanear mi negocio — $30',
-    href: '#scanner',
-    highlight: false,
-    isAnchor: true,
-  },
-  {
-    icon: Star,
-    name: 'Auditoría Pro',
-    price: '$99',
-    badge: 'Más popular',
-    description: 'Para negocios locales que toman en serio su visibilidad',
-    features: [
-      'Revisión manual del sitio web y Google Business Profile',
-      'Comparación con competidores',
-      'Recomendaciones personalizadas',
-      'Video explicativo',
-      'Seguimiento a 30 días',
-    ],
-    cta: 'Reservar Auditoría Pro',
-    href: LINKS.calendly,
-    highlight: true,
-  },
-  {
-    icon: Wrench,
-    name: 'Implementación Completa',
-    price: 'desde $499',
-    badge: null,
-    description: 'Para negocios que quieren que alguien más lo haga',
-    features: [
-      'Mejoras de copy en el sitio web',
-      'Sección de preguntas frecuentes',
-      'Páginas de servicios locales',
-      'Mejoras de CTA',
-      'Recomendaciones de contenido estructurado',
-      'Configuración de schema markup',
-    ],
-    cta: 'Cotizar Implementación',
-    href: LINKS.calendly,
-    highlight: false,
-  },
-];
+const planIcons = [Zap, Star, Wrench];
+const planHighlight = [false, true, false];
+const planIsAnchor = [true, false, false];
+const planHref = ['#scanner', LINKS.calendly, LINKS.calendly];
 
 const ctaClass = (highlight: boolean) =>
   `block text-center font-bold py-3.5 rounded-xl transition-all duration-200 hover:scale-105 ${
@@ -77,7 +15,14 @@ const ctaClass = (highlight: boolean) =>
       : 'glass border border-white/10 text-white hover:bg-white/10'
   }`;
 
-export default function Pricing() {
+interface PricingProps {
+  language: Language;
+}
+
+export default function Pricing({ language }: PricingProps) {
+  const t = translations[language].pricing;
+  const plans = t.plans;
+
   return (
     <section id="pricing" className="py-24 relative">
       <div className="absolute inset-0 -z-10">
@@ -86,26 +31,25 @@ export default function Pricing() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Precios</p>
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">{t.eyebrow}</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            De la visibilidad a la{' '}
-            <span className="gradient-text">implementación</span>
+            {t.headline1}{' '}
+            <span className="gradient-text">{t.headlineHighlight}</span>
           </h2>
-          <p className="text-slate-400 text-lg max-w-xl mx-auto">
-            Empezá con el escaneo y sumá apoyo según lo que necesitás para mejorar.
-          </p>
+          <p className="text-slate-400 text-lg max-w-xl mx-auto">{t.subheadline}</p>
         </div>
 
         <div className="grid sm:grid-cols-3 gap-6">
-          {plans.map((plan) => {
-            const Icon = plan.icon;
+          {plans.map((plan, i) => {
+            const Icon = planIcons[i];
+            const highlight = planHighlight[i];
+            const isAnchor = planIsAnchor[i];
+            const href = planHref[i];
             return (
               <div
                 key={plan.name}
                 className={`relative rounded-2xl p-7 flex flex-col ${
-                  plan.highlight
-                    ? 'glass-strong gradient-border pulse-glow'
-                    : 'glass hover:bg-white/[0.06] transition-colors'
+                  highlight ? 'glass-strong gradient-border pulse-glow' : 'glass hover:bg-white/[0.06] transition-colors'
                 }`}
               >
                 {plan.badge && (
@@ -117,8 +61,8 @@ export default function Pricing() {
                 )}
 
                 <div className="mb-5">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${plan.highlight ? 'bg-emerald-500/20' : 'bg-slate-800'}`}>
-                    <Icon className={`w-5 h-5 ${plan.highlight ? 'text-emerald-400' : 'text-slate-400'}`} />
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${highlight ? 'bg-emerald-500/20' : 'bg-slate-800'}`}>
+                    <Icon className={`w-5 h-5 ${highlight ? 'text-emerald-400' : 'text-slate-400'}`} />
                   </div>
                   <h3 className="text-white font-bold text-lg">{plan.name}</h3>
                   <div className="text-3xl font-bold gradient-text mt-1 mb-1">{plan.price}</div>
@@ -134,17 +78,10 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                {plan.isAnchor ? (
-                  <a href={plan.href} className={ctaClass(plan.highlight)}>
-                    {plan.cta}
-                  </a>
+                {isAnchor ? (
+                  <a href={href} className={ctaClass(highlight)}>{plan.cta}</a>
                 ) : (
-                  <a
-                    href={plan.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={ctaClass(plan.highlight)}
-                  >
+                  <a href={href} target="_blank" rel="noopener noreferrer" className={ctaClass(highlight)}>
                     {plan.cta}
                   </a>
                 )}

@@ -1,35 +1,16 @@
 import { BrainCircuit, Search, MessageSquare, TrendingUp } from 'lucide-react';
+import { translations } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
 
-const stats = [
-  { value: '60%+', label: 'de las búsquedas ya tienen respuestas generadas por IA' },
-  { value: '3×', label: 'más probable que elijan negocios recomendados por IA' },
-  { value: '2025', label: 'el año en que la IA cambió la búsqueda local para siempre' },
-];
+const shiftIcons = [Search, BrainCircuit, MessageSquare, TrendingUp];
 
-const shifts = [
-  {
-    icon: Search,
-    title: 'De resultados de búsqueda a resúmenes de IA',
-    body: 'Los clientes ya no revisan diez links. Le hacen una pregunta a un asistente de IA y reciben una respuesta curada — usualmente con uno o dos negocios.',
-  },
-  {
-    icon: BrainCircuit,
-    title: 'La IA lee tus señales, no tus intenciones',
-    body: 'Los sistemas de IA evalúan negocios basándose en información estructurada: qué ofrecés, dónde, a quién servís, qué dicen los clientes y si tus datos son claros y consistentes.',
-  },
-  {
-    icon: MessageSquare,
-    title: 'Las conversaciones reemplazan las búsquedas por palabras clave',
-    body: '"Mejor dentista cerca de mí que atienda sábados con buenas reseñas" — así buscan los clientes hoy. Tu negocio necesita ser considerado en esas consultas complejas y ricas en intención.',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Los que ganan obtienen ventajas que se acumulan',
-    body: 'Los negocios con señales fuertes de visibilidad son citados, resumidos y recomendados más seguido — lo que construye reputación, reseñas y más citas de IA con el tiempo.',
-  },
-];
+interface WhyNowSectionProps {
+  language: Language;
+}
 
-export default function WhyNowSection() {
+export default function WhyNowSection({ language }: WhyNowSectionProps) {
+  const t = translations[language].whyNow;
+
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="absolute inset-0 -z-10">
@@ -38,19 +19,16 @@ export default function WhyNowSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Por qué importa ahora</p>
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">{t.eyebrow}</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            La forma en que los clientes encuentran negocios{' '}
-            <span className="gradient-text">cambió fundamentalmente</span>
+            {t.headline1}{' '}
+            <span className="gradient-text">{t.headlineHighlight}</span>
           </h2>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Los asistentes de IA se convirtieron en la nueva primera página del descubrimiento local.
-            La mayoría de los negocios no están listos — y no lo saben.
-          </p>
+          <p className="text-slate-400 text-lg max-w-2xl mx-auto">{t.subheadline}</p>
         </div>
 
         <div className="grid sm:grid-cols-3 gap-6 mb-16">
-          {stats.map((stat) => (
+          {t.stats.map((stat) => (
             <div key={stat.value} className="glass rounded-2xl p-6 text-center">
               <div className="text-3xl font-bold gradient-text mb-2">{stat.value}</div>
               <div className="text-slate-400 text-sm">{stat.label}</div>
@@ -59,8 +37,8 @@ export default function WhyNowSection() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-6">
-          {shifts.map((item) => {
-            const Icon = item.icon;
+          {t.shifts.map((item, i) => {
+            const Icon = shiftIcons[i];
             return (
               <div
                 key={item.title}
