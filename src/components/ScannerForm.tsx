@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Building2, Star, Globe, Zap, ArrowRight, Loader2 } from 'lucide-react';
+import { Building2, Star, Globe, Zap, ArrowRight, Loader2, Lock } from 'lucide-react';
 import type { ScanFormData, YesNo, YesNoUnknown } from '@/lib/types';
 import { BUSINESS_CATEGORIES } from '@/lib/constants';
+import { translations } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
 
-interface ScannerFormProps {
-  onSubmit: (data: ScanFormData) => void;
-}
+const STORAGE_KEY = 'ai_visibility_scan_form';
 
 const defaultForm: ScanFormData = {
   businessName: '',
@@ -46,21 +46,10 @@ function SectionHeader({ icon: Icon, label, title }: { icon: React.ElementType; 
 }
 
 function TextInput({
-  label,
-  placeholder,
-  hint,
-  value,
-  onChange,
-  required,
-  type = 'text',
+  label, placeholder, hint, value, onChange, required, type = 'text',
 }: {
-  label: string;
-  placeholder: string;
-  hint?: string;
-  value: string;
-  onChange: (v: string) => void;
-  required?: boolean;
-  type?: string;
+  label: string; placeholder: string; hint?: string; value: string;
+  onChange: (v: string) => void; required?: boolean; type?: string;
 }) {
   return (
     <div>
@@ -80,19 +69,10 @@ function TextInput({
 }
 
 function SelectInput({
-  label,
-  hint,
-  value,
-  onChange,
-  options,
-  required,
+  label, hint, value, onChange, options, placeholder, required,
 }: {
-  label: string;
-  hint?: string;
-  value: string;
-  onChange: (v: string) => void;
-  options: string[];
-  required?: boolean;
+  label: string; hint?: string; value: string; onChange: (v: string) => void;
+  options: string[]; placeholder: string; required?: boolean;
 }) {
   return (
     <div>
@@ -104,7 +84,7 @@ function SelectInput({
         onChange={(e) => onChange(e.target.value)}
         className="w-full bg-slate-900/60 border border-slate-700 hover:border-slate-600 focus:border-emerald-500 focus:outline-none rounded-xl px-4 py-3 text-white transition-colors text-sm appearance-none"
       >
-        <option value="" className="bg-slate-900">Select a category…</option>
+        <option value="" className="bg-slate-900">{placeholder}</option>
         {options.map((opt) => (
           <option key={opt} value={opt} className="bg-slate-900">{opt}</option>
         ))}
@@ -115,15 +95,10 @@ function SelectInput({
 }
 
 function YesNoToggle({
-  label,
-  hint,
-  value,
-  onChange,
+  label, hint, value, onChange, yesLabel, noLabel,
 }: {
-  label: string;
-  hint?: string;
-  value: YesNo | '';
-  onChange: (v: YesNo) => void;
+  label: string; hint?: string; value: YesNo | ''; onChange: (v: YesNo) => void;
+  yesLabel: string; noLabel: string;
 }) {
   return (
     <div>
@@ -142,7 +117,7 @@ function YesNoToggle({
                 : 'bg-slate-900/60 border-slate-700 text-slate-400 hover:border-slate-500'
             }`}
           >
-            {opt === 'yes' ? 'Yes' : 'No'}
+            {opt === 'yes' ? yesLabel : noLabel}
           </button>
         ))}
       </div>
@@ -152,20 +127,15 @@ function YesNoToggle({
 }
 
 function ThreeWayToggle({
-  label,
-  hint,
-  value,
-  onChange,
+  label, hint, value, onChange, yesLabel, noLabel, unknownLabel,
 }: {
-  label: string;
-  hint?: string;
-  value: YesNoUnknown | '';
-  onChange: (v: YesNoUnknown) => void;
+  label: string; hint?: string; value: YesNoUnknown | ''; onChange: (v: YesNoUnknown) => void;
+  yesLabel: string; noLabel: string; unknownLabel: string;
 }) {
   const opts: { value: YesNoUnknown; label: string }[] = [
-    { value: 'yes', label: 'Yes' },
-    { value: 'no', label: 'No' },
-    { value: 'unknown', label: "Don't know" },
+    { value: 'yes', label: yesLabel },
+    { value: 'no', label: noLabel },
+    { value: 'unknown', label: unknownLabel },
   ];
 
   return (
@@ -196,10 +166,19 @@ function ThreeWayToggle({
   );
 }
 
-export default function ScannerForm({ onSubmit }: ScannerFormProps) {
+interface ScannerFormProps {
+  language: Language;
+  cancelledPayment?: boolean;
+}
+
+export default function ScannerForm({ language, cancelledPayment }: ScannerFormProps) {
   const [form, setForm] = useState<ScanFormData>(defaultForm);
   const [errors, setErrors] = useState<Partial<Record<keyof ScanFormData, string>>>({});
   const [loading, setLoading] = useState(false);
+  const [checkoutError, setCheckoutError] = useState('');
+
+  const t = translations[language].scanner;
+  const f = t.fields;
 
   function set<K extends keyof ScanFormData>(key: K, value: ScanFormData[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -208,21 +187,49 @@ export default function ScannerForm({ onSubmit }: ScannerFormProps) {
 
   function validate(): boolean {
     const newErrors: Partial<Record<keyof ScanFormData, string>> = {};
-    if (!form.businessName.trim()) newErrors.businessName = 'Business name is required.';
-    if (!form.city.trim()) newErrors.city = 'City is required.';
-    if (!form.category) newErrors.category = 'Please select a category.';
+    if (!form.businessName.trim()) newErrors.businessName = t.errors.businessName;
+    if (!form.city.trim()) newErrors.city = t.errors.city;
+    if (!form.category) newErrors.category = t.errors.category;
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      onSubmit(form);
-    }, 800);
+    setCheckoutError('');
+
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(form));
+    } catch {
+      // localStorage unavailable — proceed anyway
+    }
+
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          businessName: form.businessName,
+          category: form.category,
+          city: form.city,
+        }),
+      });
+
+      const data: { url?: string; error?: string } = await res.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+        return;
+      }
+
+      setCheckoutError(data.error ?? t.checkoutError);
+    } catch {
+      setCheckoutError(t.connectionError);
+    }
+
+    setLoading(false);
   }
 
   return (
@@ -233,211 +240,245 @@ export default function ScannerForm({ onSubmit }: ScannerFormProps) {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Escaneo de Visibilidad en Recomendaciones de IA</p>
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">{t.eyebrow}</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Escaneá tu negocio{' '}
-            <span className="gradient-text">ahora mismo</span>
+            {t.headline1}{' '}
+            <span className="gradient-text">{t.headlineHighlight}</span>
           </h2>
-          <p className="text-slate-400 text-lg">
-            Respondé 20 preguntas rápidas. Obtenés tu puntaje en segundos.
-          </p>
+          <p className="text-slate-400 text-lg">{t.subheadline}</p>
         </div>
+
+        {cancelledPayment && (
+          <div className="mb-8 glass rounded-2xl px-5 py-4 border border-yellow-500/20 bg-yellow-500/5 flex items-start gap-3">
+            <span className="text-yellow-400 text-lg leading-none mt-0.5">⚠</span>
+            <p className="text-yellow-300 text-sm leading-relaxed">{t.cancelledNotice}</p>
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} noValidate>
           <div className="space-y-6">
-            {/* Section A: Business Basics */}
+            {/* Section A */}
             <div className="glass rounded-2xl p-6 sm:p-8">
-              <SectionHeader icon={Building2} label="Section A" title="Business Basics" />
+              <SectionHeader icon={Building2} label={t.sections.a.label} title={t.sections.a.title} />
               <div className="grid sm:grid-cols-2 gap-5">
                 <div className="sm:col-span-2">
                   <TextInput
-                    label="Business Name"
-                    placeholder="e.g. Escazú Dental Studio"
+                    label={f.businessName.label}
+                    placeholder={f.businessName.placeholder}
+                    hint={f.businessName.hint}
                     value={form.businessName}
                     onChange={(v) => set('businessName', v)}
                     required
-                    hint="The exact name customers see on Google."
                   />
-                  {errors.businessName && (
-                    <p className="text-rose-400 text-xs mt-1">{errors.businessName}</p>
-                  )}
+                  {errors.businessName && <p className="text-rose-400 text-xs mt-1">{errors.businessName}</p>}
                 </div>
                 <div>
                   <TextInput
-                    label="City / Market"
-                    placeholder="e.g. San José, Costa Rica"
+                    label={f.city.label}
+                    placeholder={f.city.placeholder}
+                    hint={f.city.hint}
                     value={form.city}
                     onChange={(v) => set('city', v)}
                     required
-                    hint="Primary city or metro where you serve customers."
                   />
-                  {errors.city && (
-                    <p className="text-rose-400 text-xs mt-1">{errors.city}</p>
-                  )}
+                  {errors.city && <p className="text-rose-400 text-xs mt-1">{errors.city}</p>}
                 </div>
                 <div>
                   <SelectInput
-                    label="Business Category"
+                    label={f.category.label}
+                    placeholder={f.category.placeholder}
+                    hint={f.category.hint}
                     value={form.category}
                     onChange={(v) => set('category', v)}
                     options={BUSINESS_CATEGORIES}
                     required
-                    hint="Choose the category that best fits your business."
                   />
-                  {errors.category && (
-                    <p className="text-rose-400 text-xs mt-1">{errors.category}</p>
-                  )}
+                  {errors.category && <p className="text-rose-400 text-xs mt-1">{errors.category}</p>}
                 </div>
                 <TextInput
-                  label="Website URL"
-                  placeholder="https://yourbusiness.com"
+                  label={f.websiteUrl.label}
+                  placeholder={f.websiteUrl.placeholder}
+                  hint={f.websiteUrl.hint}
                   value={form.websiteUrl}
                   onChange={(v) => set('websiteUrl', v)}
                   type="url"
-                  hint="Leave blank if you don't have a website."
                 />
                 <TextInput
-                  label="Google Business Profile URL"
-                  placeholder="https://g.page/yourbusiness"
+                  label={f.googleBusinessUrl.label}
+                  placeholder={f.googleBusinessUrl.placeholder}
+                  hint={f.googleBusinessUrl.hint}
                   value={form.googleBusinessUrl}
                   onChange={(v) => set('googleBusinessUrl', v)}
                   type="url"
-                  hint="Your Google Maps listing URL."
                 />
                 <TextInput
-                  label="WhatsApp or Contact Link"
-                  placeholder="https://wa.me/1234567890"
+                  label={f.contactLink.label}
+                  placeholder={f.contactLink.placeholder}
+                  hint={f.contactLink.hint}
                   value={form.contactLink}
                   onChange={(v) => set('contactLink', v)}
-                  hint="WhatsApp, phone link, or direct contact URL."
                 />
               </div>
             </div>
 
-            {/* Section B: Trust Signals */}
+            {/* Section B */}
             <div className="glass rounded-2xl p-6 sm:p-8">
-              <SectionHeader icon={Star} label="Section B" title="Trust Signals" />
+              <SectionHeader icon={Star} label={t.sections.b.label} title={t.sections.b.title} />
               <div className="grid sm:grid-cols-2 gap-5">
                 <TextInput
-                  label="Number of Google Reviews"
-                  placeholder="e.g. 47"
+                  label={f.reviewCount.label}
+                  placeholder={f.reviewCount.placeholder}
+                  hint={f.reviewCount.hint}
                   value={form.reviewCount}
                   onChange={(v) => set('reviewCount', v)}
                   type="number"
-                  hint="Approximate count from your Google Business Profile."
                 />
                 <TextInput
-                  label="Average Star Rating"
-                  placeholder="e.g. 4.7"
+                  label={f.averageRating.label}
+                  placeholder={f.averageRating.placeholder}
+                  hint={f.averageRating.hint}
                   value={form.averageRating}
                   onChange={(v) => set('averageRating', v)}
                   type="number"
-                  hint="Your current Google rating (out of 5)."
                 />
                 <YesNoToggle
-                  label="Do you show real customer testimonials on your website?"
+                  label={f.hasTestimonials.label}
+                  hint={f.hasTestimonials.hint}
                   value={form.hasTestimonials}
                   onChange={(v) => set('hasTestimonials', v)}
-                  hint="Written or video testimonials from named customers."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="Do you have local or team photos on your website?"
+                  label={f.hasLocalPhotos.label}
+                  hint={f.hasLocalPhotos.hint}
                   value={form.hasLocalPhotos}
                   onChange={(v) => set('hasLocalPhotos', v)}
-                  hint="Real photos of your location, team, or work — not stock images."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <div className="sm:col-span-2">
                   <YesNoToggle
-                    label="Do you have social proof from third-party platforms?"
+                    label={f.hasThirdPartyProof.label}
+                    hint={f.hasThirdPartyProof.hint}
                     value={form.hasThirdPartyProof}
                     onChange={(v) => set('hasThirdPartyProof', v)}
-                    hint="Yelp, Facebook, Houzz, TripAdvisor, or industry-specific directories."
+                    yesLabel={t.yesLabel}
+                    noLabel={t.noLabel}
                   />
                 </div>
               </div>
             </div>
 
-            {/* Section C: Local Search Signals */}
+            {/* Section C */}
             <div className="glass rounded-2xl p-6 sm:p-8">
-              <SectionHeader icon={Globe} label="Section C" title="Local Search Signals" />
+              <SectionHeader icon={Globe} label={t.sections.c.label} title={t.sections.c.title} />
               <div className="grid sm:grid-cols-2 gap-5">
                 <YesNoToggle
-                  label="Do you have a clear services page?"
+                  label={f.hasServicesPage.label}
+                  hint={f.hasServicesPage.hint}
                   value={form.hasServicesPage}
                   onChange={(v) => set('hasServicesPage', v)}
-                  hint="A page that clearly lists your services and explains what you offer."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="Do you have separate pages for each main service?"
+                  label={f.hasSeparateServicePages.label}
+                  hint={f.hasSeparateServicePages.hint}
                   value={form.hasSeparateServicePages}
                   onChange={(v) => set('hasSeparateServicePages', v)}
-                  hint="Individual pages like /teeth-whitening, /hvac-repair, /family-law."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="Do you mention your service areas clearly?"
+                  label={f.mentionsServiceAreas.label}
+                  hint={f.mentionsServiceAreas.hint}
                   value={form.mentionsServiceAreas}
                   onChange={(v) => set('mentionsServiceAreas', v)}
-                  hint="Neighborhoods, cities, or regions you serve listed on your site."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="Do you show prices or starting prices?"
+                  label={f.showsPricing.label}
+                  hint={f.showsPricing.hint}
                   value={form.showsPricing}
                   onChange={(v) => set('showsPricing', v)}
-                  hint="Even price ranges reduce friction and increase AI clarity."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
               </div>
             </div>
 
-            {/* Section D: AI / Agent Readiness */}
+            {/* Section D */}
             <div className="glass rounded-2xl p-6 sm:p-8">
-              <SectionHeader icon={Zap} label="Section D" title="AI & Agent Readiness" />
+              <SectionHeader icon={Zap} label={t.sections.d.label} title={t.sections.d.title} />
               <div className="grid sm:grid-cols-2 gap-5">
                 <YesNoToggle
-                  label="Do you have FAQs on your website?"
+                  label={f.hasFAQs.label}
+                  hint={f.hasFAQs.hint}
                   value={form.hasFAQs}
                   onChange={(v) => set('hasFAQs', v)}
-                  hint="A FAQ section that answers common pre-purchase questions."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="Do you publish helpful educational content?"
+                  label={f.publishesContent.label}
+                  hint={f.publishesContent.hint}
                   value={form.publishesContent}
                   onChange={(v) => set('publishesContent', v)}
-                  hint="Blog posts, guides, or articles that help your customers make decisions."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
                 <YesNoToggle
-                  label="Do you have a booking or quote request CTA?"
+                  label={f.hasBookingCTA.label}
+                  hint={f.hasBookingCTA.hint}
                   value={form.hasBookingCTA}
                   onChange={(v) => set('hasBookingCTA', v)}
-                  hint="A clear call-to-action button above the fold (book, quote, contact)."
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
                 />
-                <div className="sm:col-span-1">
-                  <ThreeWayToggle
-                    label="Do you have schema / structured data?"
-                    value={form.hasSchema}
-                    onChange={(v) => set('hasSchema', v)}
-                    hint="LocalBusiness, Service, or FAQ schema markup in your site's code."
-                  />
-                </div>
+                <ThreeWayToggle
+                  label={f.hasSchema.label}
+                  hint={f.hasSchema.hint}
+                  value={form.hasSchema}
+                  onChange={(v) => set('hasSchema', v)}
+                  yesLabel={t.yesLabel}
+                  noLabel={t.noLabel}
+                  unknownLabel={t.unknownLabel}
+                />
               </div>
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full group flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-70 text-slate-950 font-bold text-lg px-8 py-5 rounded-2xl transition-all duration-200 hover:scale-[1.02] hover:shadow-xl hover:shadow-emerald-500/25"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                  Calculando tu puntaje…
-                </>
-              ) : (
-                <>
-                  Obtener mi Puntaje de Visibilidad en Recomendaciones de IA
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </>
-              )}
-            </button>
+            {checkoutError && (
+              <div className="glass rounded-xl px-5 py-4 border border-rose-500/20 bg-rose-500/5">
+                <p className="text-rose-300 text-sm">{checkoutError}</p>
+              </div>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full group flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-70 text-slate-950 font-bold text-lg px-8 py-5 rounded-2xl transition-all duration-200 hover:scale-[1.02] hover:shadow-xl hover:shadow-emerald-500/25"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    {t.submitLoading}
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-5 h-5" />
+                    {t.submitButton}
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </>
+                )}
+              </button>
+              <p className="text-center text-slate-500 text-xs mt-3 flex items-center justify-center gap-1.5">
+                <Lock className="w-3 h-3" />
+                {t.trustLine}
+              </p>
+            </div>
           </div>
         </form>
       </div>

@@ -4,10 +4,13 @@ import { useEffect, useRef, useState } from 'react';
 import { CheckCircle, AlertTriangle, XCircle, TrendingUp, ExternalLink } from 'lucide-react';
 import type { ScanResult } from '@/lib/types';
 import { LINKS } from '@/lib/constants';
+import { translations } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
 
 interface ScoreResultProps {
   result: ScanResult;
   businessName: string;
+  language: Language;
 }
 
 function ScoreRing({ score }: { score: number }) {
@@ -21,32 +24,16 @@ function ScoreRing({ score }: { score: number }) {
   }, []);
 
   const ringColor =
-    score >= 85
-      ? '#10b981'
-      : score >= 70
-      ? '#3b82f6'
-      : score >= 50
-      ? '#eab308'
-      : score >= 30
-      ? '#f97316'
-      : '#ef4444';
+    score >= 85 ? '#10b981' : score >= 70 ? '#3b82f6' : score >= 50 ? '#eab308' : score >= 30 ? '#f97316' : '#ef4444';
 
   return (
     <div className="relative w-36 h-36 mx-auto">
       <svg className="w-full h-full -rotate-90" viewBox="0 0 120 120">
         <circle cx="60" cy="60" r="54" fill="none" stroke="#1e293b" strokeWidth="10" />
         <circle
-          cx="60"
-          cy="60"
-          r="54"
-          fill="none"
-          stroke={ringColor}
-          strokeWidth="10"
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={offset}
-          className="score-ring"
-          style={{ filter: `drop-shadow(0 0 8px ${ringColor}60)` }}
+          cx="60" cy="60" r="54" fill="none" stroke={ringColor} strokeWidth="10"
+          strokeLinecap="round" strokeDasharray={circumference} strokeDashoffset={offset}
+          className="score-ring" style={{ filter: `drop-shadow(0 0 8px ${ringColor}60)` }}
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -98,9 +85,10 @@ const statusConfig: Record<string, { icon: React.ElementType; bg: string; border
   red: { icon: XCircle, bg: 'bg-rose-500/10', border: 'border-rose-500/30', text: 'text-rose-400' },
 };
 
-export default function ScoreResult({ result, businessName }: ScoreResultProps) {
+export default function ScoreResult({ result, businessName, language }: ScoreResultProps) {
   const cfg = statusConfig[result.statusColor] ?? statusConfig.yellow;
   const StatusIcon = cfg.icon;
+  const t = translations[language].scoreResult;
 
   return (
     <section className="py-24 relative">
@@ -111,13 +99,9 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
-          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Tus resultados</p>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-            Puntaje de Visibilidad en Recomendaciones de IA
-          </h2>
-          {businessName && (
-            <p className="text-slate-400 text-lg">{businessName}</p>
-          )}
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">{t.eyebrow}</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">{t.headline}</h2>
+          {businessName && <p className="text-slate-400 text-lg">{businessName}</p>}
         </div>
 
         {/* Score card */}
@@ -138,7 +122,7 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
 
         {/* Category breakdown */}
         <div className="glass rounded-2xl p-6 sm:p-8 mb-6">
-          <h3 className="text-white font-bold text-lg mb-6">Desglose del puntaje</h3>
+          <h3 className="text-white font-bold text-lg mb-6">{t.breakdownTitle}</h3>
           <div className="space-y-5">
             {result.categories.map((cat) => (
               <CategoryBar key={cat.label} {...cat} />
@@ -148,8 +132,8 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
 
         {/* Recommendations */}
         <div className="glass rounded-2xl p-6 sm:p-8 mb-6">
-          <h3 className="text-white font-bold text-lg mb-2">Acciones recomendadas</h3>
-          <p className="text-slate-400 text-sm mb-6">Priorizadas según tus respuestas — las mejoras de mayor impacto primero.</p>
+          <h3 className="text-white font-bold text-lg mb-2">{t.recommendationsTitle}</h3>
+          <p className="text-slate-400 text-sm mb-6">{t.recommendationsSubtitle}</p>
           <ol className="space-y-4">
             {result.recommendations.map((rec, i) => (
               <li key={i} className="flex gap-4">
@@ -167,28 +151,26 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
           <div className="flex gap-3">
             <TrendingUp className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-white font-semibold mb-1">Oportunidad estimada</h4>
+              <h4 className="text-white font-semibold mb-1">{t.opportunityTitle}</h4>
               <p className="text-slate-400 text-sm">{result.estimatedOpportunity}</p>
             </div>
           </div>
         </div>
 
-        {/* Monetization CTA */}
+        {/* Upsell CTA */}
         <div className="glass-strong rounded-2xl p-8 gradient-border">
           <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-white mb-2">¿Querés el plan de acción completo de visibilidad en recomendaciones de IA?</h3>
-            <p className="text-slate-400">
-              Podemos convertir este escaneo en un plan práctico de 7 días para mejorar la visibilidad de tu negocio en recomendaciones de IA.
-            </p>
+            <h3 className="text-2xl font-bold text-white mb-2">{t.upsellTitle}</h3>
+            <p className="text-slate-400 max-w-xl mx-auto">{t.upsellBody}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href={LINKS.stripe}
+              href={LINKS.calendly}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3.5 rounded-xl transition-all duration-200 hover:scale-105"
             >
-              Obtener Reporte Completo — $29
+              {t.proAuditCta}
               <ExternalLink className="w-4 h-4" />
             </a>
             <a
@@ -197,7 +179,7 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 glass hover:bg-white/10 text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 border border-white/10"
             >
-              Reservar Implementación Completa
+              {t.implementationCta}
             </a>
             <a
               href={LINKS.whatsapp}
@@ -205,7 +187,7 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 glass hover:bg-white/10 text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 border border-white/10"
             >
-              Enviar resultados por WhatsApp
+              {t.whatsappCta}
             </a>
           </div>
         </div>

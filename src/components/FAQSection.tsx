@@ -2,29 +2,12 @@
 
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { translations } from '@/lib/i18n';
+import type { Language } from '@/lib/i18n';
 
-const faqs = [
-  {
-    q: '¿Esto garantiza que ChatGPT va a recomendar mi negocio?',
-    a: 'No. El escaneo ayuda a identificar las señales que hacen tu negocio más claro, confiable y fácil de entender para sistemas de IA. Ninguna herramienta puede garantizar que un sistema de IA te recomiende — esa determinación la toma la IA. Lo que sí podemos hacer es ayudarte a eliminar las barreras que hacen que la IA ignore o malinterprete tu negocio.',
-  },
-  {
-    q: '¿Esto es SEO?',
-    a: 'Incluye fundamentos de SEO, pero el enfoque va más allá. La visibilidad en recomendaciones de IA se trata de claridad, confianza, información estructurada y responder preguntas reales de los clientes — no solo de rankear por palabras clave. Pensalo como la siguiente capa sobre el SEO local tradicional.',
-  },
-  {
-    q: '¿Necesito un sitio web nuevo?',
-    a: 'Casi nunca. Muchas de las mejoras de mayor impacto — agregar FAQs, testimonios, detalles del área de servicio, rangos de precios y schema markup — se pueden incorporar al sitio web que ya tenés sin necesidad de un rediseño. Un sitio nuevo rara vez es la primera prioridad.',
-  },
-  {
-    q: '¿Las agencias pueden usar esta herramienta?',
-    a: 'Sí. Las agencias pueden usar el Escaneo de Visibilidad en Recomendaciones de IA como herramienta de generación de leads y diagnóstico para clientes locales. Corré un escaneo durante una llamada de ventas para demostrar de inmediato las brechas y oportunidades. Nuestros planes Pro y de Implementación Completa están diseñados para flujos de trabajo de agencias.',
-  },
-  {
-    q: '¿Cuánto tarda el escaneo?',
-    a: 'Menos de 2 minutos. El formulario hace 20 preguntas de sí/no y de completar sobre tu presencia digital actual. Sin logins, sin integraciones, sin configuración técnica. Tu puntaje es instantáneo.',
-  },
-];
+interface FAQSectionProps {
+  language: Language;
+}
 
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
@@ -49,20 +32,22 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-export default function FAQSection() {
+export default function FAQSection({ language }: FAQSectionProps) {
+  const t = translations[language].faq;
+
   return (
     <section id="faq" className="py-24 relative">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-blue-400 font-semibold text-sm uppercase tracking-wider mb-3">Preguntas frecuentes</p>
+          <p className="text-blue-400 font-semibold text-sm uppercase tracking-wider mb-3">{t.eyebrow}</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Preguntas frecuentes,{' '}
-            <span className="gradient-text">respuestas honestas</span>
+            {t.headline1}{' '}
+            <span className="gradient-text">{t.headlineHighlight}</span>
           </h2>
         </div>
 
         <div className="space-y-3">
-          {faqs.map((faq) => (
+          {t.items.map((faq) => (
             <FAQItem key={faq.q} q={faq.q} a={faq.a} />
           ))}
         </div>
