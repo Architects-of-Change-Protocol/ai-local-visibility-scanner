@@ -107,38 +107,38 @@ function buildRecommendations(data: ScanFormData): string[] {
   const recs: string[] = [];
 
   if (data.hasFAQs !== 'yes') {
-    recs.push('Add a FAQ section that answers the exact questions customers ask before buying — this is one of the highest-value AI signals.');
+    recs.push('Agregá una sección de preguntas frecuentes que responda exactamente lo que los clientes preguntan antes de comprar — es una de las señales de mayor valor para ser considerado en recomendaciones de IA.');
   }
   if (data.hasSeparateServicePages !== 'yes') {
-    recs.push('Create a dedicated page for each main service so AI systems can understand your full offering and surface the right page.');
+    recs.push('Creá una página dedicada para cada servicio principal para que los sistemas de IA puedan entender tu oferta completa y mostrar la página correcta en recomendaciones.');
   }
   if (data.mentionsServiceAreas !== 'yes') {
-    recs.push('Clearly list every neighborhood, city, and region you serve — AI assistants use this to match businesses to local queries.');
+    recs.push('Listá claramente cada barrio, ciudad y región donde prestás servicios — los asistentes de IA usan esta información para vincular negocios con consultas locales.');
   }
   const count = parseInt(data.reviewCount, 10) || 0;
   if (count < 30) {
-    recs.push('Build a review acquisition workflow — send follow-up messages asking happy customers to leave a Google review.');
+    recs.push('Desarrollá un flujo de captación de reseñas — enviá mensajes de seguimiento a clientes satisfechos pidiéndoles que dejen una reseña en Google.');
   }
   if (data.hasSchema !== 'yes') {
-    recs.push('Add LocalBusiness and Service schema markup so search engines and AI tools can read your data in a structured way.');
+    recs.push('Agregá schema markup de LocalBusiness y Service para que los motores de búsqueda y herramientas de IA puedan leer tu información de forma estructurada — mejora directamente tu visibilidad en recomendaciones.');
   }
   if (data.hasTestimonials !== 'yes' || data.hasLocalPhotos !== 'yes') {
-    recs.push('Add real customer testimonials and authentic business photos — these humanize your brand for both visitors and AI systems.');
+    recs.push('Incorporá testimonios reales de clientes y fotos auténticas de tu negocio — humanizan tu marca para visitantes y son señales de confianza que los sistemas de IA valoran.');
   }
   if (data.showsPricing !== 'yes') {
-    recs.push('Add starting prices or price ranges — reducing pricing ambiguity increases trust and reduces the friction that causes customers to look elsewhere.');
+    recs.push('Agregá precios iniciales o rangos de precios — reducir la ambigüedad de precios aumenta la confianza y reduce la fricción que lleva a los clientes a buscar en otro lado.');
   }
   if (data.hasBookingCTA !== 'yes') {
-    recs.push('Place a direct quote or booking CTA above the fold on every key page so customers can act immediately.');
+    recs.push('Colocá un CTA de cotización o reserva visible above the fold en cada página clave para que los clientes puedan actuar de inmediato.');
   }
   if (data.publishesContent !== 'yes') {
-    recs.push('Publish helpful educational content that answers common questions in your industry — AI systems learn from and reference authoritative local content.');
+    recs.push('Publicá contenido educativo útil que responda preguntas frecuentes de tu rubro — los sistemas de IA aprenden de y referencian contenido local con autoridad.');
   }
   if (data.hasThirdPartyProof !== 'yes') {
-    recs.push('Gather and display reviews from Yelp, Facebook, Houzz, or industry directories — third-party proof amplifies your trustworthiness.');
+    recs.push('Recopilá y mostrá reseñas de Yelp, Facebook, Houzz u otros directorios del rubro — la prueba social de terceros amplifica tu confiabilidad como opción recomendable.');
   }
   if (!data.googleBusinessUrl.trim()) {
-    recs.push('Claim and fully complete your Google Business Profile — it is the single most important local AI signal you control.');
+    recs.push('Reclamá y completá al 100% tu Google Business Profile — es la señal de IA local más importante que podés controlar directamente.');
   }
 
   return recs.slice(0, 7);
@@ -149,36 +149,36 @@ function buildPriorityFixes(recs: string[]): string[] {
 }
 
 function statusLabel(score: number): { label: string; color: string } {
-  if (score >= 85) return { label: 'AI-Ready Local Authority', color: 'emerald' };
-  if (score >= 70) return { label: 'Strong, but missing key AI signals', color: 'blue' };
-  if (score >= 50) return { label: 'Visible, but not AI-ready', color: 'yellow' };
-  if (score >= 30) return { label: 'Hard for AI to trust', color: 'orange' };
-  return { label: 'Nearly invisible to AI discovery', color: 'red' };
+  if (score >= 85) return { label: 'Alta visibilidad — listo para ser recomendado por IA', color: 'emerald' };
+  if (score >= 70) return { label: 'Buena visibilidad, pero faltan señales clave de recomendación', color: 'blue' };
+  if (score >= 50) return { label: 'Visible, pero aún no recomendable por IA', color: 'yellow' };
+  if (score >= 30) return { label: 'Baja visibilidad en recomendaciones de IA', color: 'orange' };
+  return { label: 'Visibilidad muy baja — casi invisible para la IA', color: 'red' };
 }
 
 function buildSummary(score: number, businessName: string): string {
-  const name = businessName.trim() || 'Your business';
+  const name = businessName.trim() || 'Tu negocio';
   if (score >= 85) {
-    return `${name} is well-positioned for AI-era discovery. You have strong signals across profile completeness, trust, and content clarity. Keep building on your content and structured data to maintain authority.`;
+    return `${name} está bien posicionado para ser considerado en recomendaciones de IA. Tenés señales sólidas en completitud de perfil, confianza y claridad de contenido. Seguí fortaleciendo tu contenido y datos estructurados para mantener esa ventaja.`;
   }
   if (score >= 70) {
-    return `${name} has a solid foundation but is missing a few key AI signals that competitors may have. Closing these gaps could move you from being visible to being recommended.`;
+    return `${name} tiene una base sólida pero le faltan algunas señales clave de recomendación que tus competidores pueden tener. Cerrar esas brechas podría llevarte de ser visible a ser recomendado activamente por sistemas de IA.`;
   }
   if (score >= 50) {
-    return `${name} is findable but unclear to AI systems. Customers searching through AI assistants may see your name but lack the trust signals to choose you. Targeted improvements will have immediate impact.`;
+    return `${name} es encontrable pero poco claro para los sistemas de IA. Los clientes que buscan a través de asistentes de IA pueden ver tu nombre, pero les faltan las señales de confianza para elegirte. Mejoras focalizadas tendrán impacto inmediato en tu visibilidad en recomendaciones.`;
   }
   if (score >= 30) {
-    return `AI systems struggle to confidently understand and recommend ${name}. You have the basic presence, but weak signals across trust, clarity, and structure make it easy for competitors to get chosen first.`;
+    return `Los sistemas de IA tienen dificultades para entender y considerar a ${name} en recomendaciones. Tenés presencia básica, pero señales débiles de confianza, claridad y estructura hacen fácil que los competidores sean recomendados primero.`;
   }
-  return `${name} is largely invisible to AI-powered discovery. Without clear signals, AI assistants and search engines cannot reliably surface or recommend your business. A structured improvement plan is essential.`;
+  return `${name} tiene visibilidad muy baja en recomendaciones de IA. Sin señales claras, los asistentes de IA y motores de búsqueda no pueden entender ni recomendar tu negocio de forma confiable. Un plan de mejora estructurado es esencial.`;
 }
 
 function estimatedOpportunity(score: number): string {
-  if (score >= 85) return 'You are capturing most AI-driven traffic. Focus on maintaining and expanding content authority.';
-  if (score >= 70) return 'Fixing 2–3 key gaps could move you into AI-ready status and noticeably increase AI-referred leads.';
-  if (score >= 50) return 'Businesses at this score commonly see a 30–50% increase in AI-referred inquiries after structured improvements.';
-  if (score >= 30) return 'There is significant untapped opportunity. Most competitors at this score see meaningful lead increases within 60 days of improvement.';
-  return 'Your highest-priority opportunity is getting the basics right — once done, results can compound quickly.';
+  if (score >= 85) return 'Estás capturando la mayor parte del tráfico proveniente de recomendaciones de IA. Enfocate en mantener y expandir tu autoridad de contenido.';
+  if (score >= 70) return 'Corregir 2–3 brechas clave podría llevarte a una visibilidad alta en recomendaciones de IA y aumentar notablemente los leads provenientes de IA.';
+  if (score >= 50) return 'Los negocios con este puntaje suelen ver un aumento del 30–50% en consultas provenientes de recomendaciones de IA después de mejoras estructuradas.';
+  if (score >= 30) return 'Hay una oportunidad significativa sin aprovechar. La mayoría de los negocios con este puntaje ven un aumento considerable en leads dentro de los 60 días de implementar mejoras.';
+  return 'Tu oportunidad de mayor prioridad es establecer las bases correctas — una vez hecho, los resultados se van acumulando rápidamente.';
 }
 
 export function computeScore(data: ScanFormData): ScanResult {

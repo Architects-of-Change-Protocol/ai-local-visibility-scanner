@@ -1,31 +1,31 @@
 import { BrainCircuit, Search, MessageSquare, TrendingUp } from 'lucide-react';
 
 const stats = [
-  { value: '60%+', label: 'of searches now have AI-generated answers' },
-  { value: '3×', label: 'more likely to choose AI-recommended businesses' },
-  { value: '2025', label: 'the year AI changed local search forever' },
+  { value: '60%+', label: 'de las búsquedas ya tienen respuestas generadas por IA' },
+  { value: '3×', label: 'más probable que elijan negocios recomendados por IA' },
+  { value: '2025', label: 'el año en que la IA cambió la búsqueda local para siempre' },
 ];
 
 const shifts = [
   {
     icon: Search,
-    title: 'From search results to AI summaries',
-    body: 'Customers no longer scroll through ten blue links. They ask AI assistants a question and get a curated answer — usually featuring just one or two businesses.',
+    title: 'De resultados de búsqueda a resúmenes de IA',
+    body: 'Los clientes ya no revisan diez links. Le hacen una pregunta a un asistente de IA y reciben una respuesta curada — usualmente con uno o dos negocios.',
   },
   {
     icon: BrainCircuit,
-    title: 'AI reads your signals, not your intentions',
-    body: 'AI systems judge businesses on structured information: what you offer, where, who you serve, what customers say, and whether your data is clear and consistent.',
+    title: 'La IA lee tus señales, no tus intenciones',
+    body: 'Los sistemas de IA evalúan negocios basándose en información estructurada: qué ofrecés, dónde, a quién servís, qué dicen los clientes y si tus datos son claros y consistentes.',
   },
   {
     icon: MessageSquare,
-    title: 'Conversations replace keyword searches',
-    body: '"Best dentist near me open Saturdays with good reviews" — this is how customers search today. Your business needs to match those complex, intent-rich queries.',
+    title: 'Las conversaciones reemplazan las búsquedas por palabras clave',
+    body: '"Mejor dentista cerca de mí que atienda sábados con buenas reseñas" — así buscan los clientes hoy. Tu negocio necesita ser considerado en esas consultas complejas y ricas en intención.',
   },
   {
     icon: TrendingUp,
-    title: 'Winners get compounding advantages',
-    body: 'Businesses with strong AI signals get cited, summarized, and recommended more — which builds reputation, reviews, and more AI citations over time.',
+    title: 'Los que ganan obtienen ventajas que se acumulan',
+    body: 'Los negocios con señales fuertes de visibilidad son citados, resumidos y recomendados más seguido — lo que construye reputación, reseñas y más citas de IA con el tiempo.',
   },
 ];
 
@@ -38,14 +38,14 @@ export default function WhyNowSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Why this matters now</p>
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Por qué importa ahora</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            The way customers find businesses{' '}
-            <span className="gradient-text">has fundamentally changed</span>
+            La forma en que los clientes encuentran negocios{' '}
+            <span className="gradient-text">cambió fundamentalmente</span>
           </h2>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            AI assistants have become the new front page for local discovery. Most businesses
-            are not ready — and they don&#39;t know it.
+            Los asistentes de IA se convirtieron en la nueva primera página del descubrimiento local.
+            La mayoría de los negocios no están listos — y no lo saben.
           </p>
         </div>
 

@@ -111,9 +111,9 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10">
-          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Your Results</p>
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Tus resultados</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-2">
-            AI Findability Report
+            Puntaje de Visibilidad en Recomendaciones de IA
           </h2>
           {businessName && (
             <p className="text-slate-400 text-lg">{businessName}</p>
@@ -138,7 +138,7 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
 
         {/* Category breakdown */}
         <div className="glass rounded-2xl p-6 sm:p-8 mb-6">
-          <h3 className="text-white font-bold text-lg mb-6">Score Breakdown</h3>
+          <h3 className="text-white font-bold text-lg mb-6">Desglose del puntaje</h3>
           <div className="space-y-5">
             {result.categories.map((cat) => (
               <CategoryBar key={cat.label} {...cat} />
@@ -148,8 +148,8 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
 
         {/* Recommendations */}
         <div className="glass rounded-2xl p-6 sm:p-8 mb-6">
-          <h3 className="text-white font-bold text-lg mb-2">Top Recommended Actions</h3>
-          <p className="text-slate-400 text-sm mb-6">Prioritized based on your answers — highest-impact improvements first.</p>
+          <h3 className="text-white font-bold text-lg mb-2">Acciones recomendadas</h3>
+          <p className="text-slate-400 text-sm mb-6">Priorizadas según tus respuestas — las mejoras de mayor impacto primero.</p>
           <ol className="space-y-4">
             {result.recommendations.map((rec, i) => (
               <li key={i} className="flex gap-4">
@@ -167,7 +167,7 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
           <div className="flex gap-3">
             <TrendingUp className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
             <div>
-              <h4 className="text-white font-semibold mb-1">Estimated Opportunity</h4>
+              <h4 className="text-white font-semibold mb-1">Oportunidad estimada</h4>
               <p className="text-slate-400 text-sm">{result.estimatedOpportunity}</p>
             </div>
           </div>
@@ -176,9 +176,9 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
         {/* Monetization CTA */}
         <div className="glass-strong rounded-2xl p-8 gradient-border">
           <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-white mb-2">Want the full AI visibility action plan?</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">¿Querés el plan de acción completo de visibilidad en recomendaciones de IA?</h3>
             <p className="text-slate-400">
-              We can turn this scan into a practical 7-day improvement plan for your business.
+              Podemos convertir este escaneo en un plan práctico de 7 días para mejorar la visibilidad de tu negocio en recomendaciones de IA.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -188,7 +188,7 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3.5 rounded-xl transition-all duration-200 hover:scale-105"
             >
-              Get Full Report — $29
+              Obtener Reporte Completo — $29
               <ExternalLink className="w-4 h-4" />
             </a>
             <a
@@ -197,7 +197,7 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 glass hover:bg-white/10 text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 border border-white/10"
             >
-              Book Done-For-You Optimization
+              Reservar Implementación Completa
             </a>
             <a
               href={LINKS.whatsapp}
@@ -205,7 +205,7 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 glass hover:bg-white/10 text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 border border-white/10"
             >
-              Send Results by WhatsApp
+              Enviar resultados por WhatsApp
             </a>
           </div>
         </div>

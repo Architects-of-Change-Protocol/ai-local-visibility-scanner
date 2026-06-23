@@ -4,20 +4,20 @@ const steps = [
   {
     number: '01',
     icon: ClipboardList,
-    title: 'Enter your business details',
-    body: 'Answer 20 quick questions about your online presence, reviews, website structure, and content. No technical knowledge required.',
+    title: 'Ingresá los datos de tu negocio',
+    body: 'Respondé 20 preguntas rápidas sobre tu presencia digital, reseñas, estructura del sitio web y contenido. No se requiere conocimiento técnico.',
   },
   {
     number: '02',
     icon: BarChart2,
-    title: 'Get your AI Findability Score',
-    body: 'Our scoring model evaluates 7 dimensions of AI visibility and gives you a clear score from 0 to 100, with a breakdown of where you stand.',
+    title: 'Obtenés tu Puntaje de Visibilidad en Recomendaciones de IA',
+    body: 'Nuestro modelo de puntaje evalúa 7 dimensiones de visibilidad en recomendaciones y te da un score claro del 0 al 100 con el desglose de dónde estás parado.',
   },
   {
     number: '03',
     icon: Lightbulb,
-    title: 'Receive a practical action plan',
-    body: 'Get prioritized, specific recommendations tailored to your answers — so you know exactly what to fix first for the biggest impact.',
+    title: 'Recibís un plan de acción práctico',
+    body: 'Obtené recomendaciones priorizadas y específicas según tus respuestas — para que sepas exactamente qué mejorar primero para mayor impacto en tu visibilidad.',
   },
 ];
 
@@ -26,13 +26,13 @@ export default function HowItWorks() {
     <section className="py-24 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <p className="text-blue-400 font-semibold text-sm uppercase tracking-wider mb-3">How it works</p>
+          <p className="text-blue-400 font-semibold text-sm uppercase tracking-wider mb-3">Cómo funciona</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Your AI visibility score{' '}
-            <span className="gradient-text">in three steps</span>
+            Tu puntaje de visibilidad en recomendaciones de IA{' '}
+            <span className="gradient-text">en tres pasos</span>
           </h2>
           <p className="text-slate-400 text-lg max-w-xl mx-auto">
-            No technical setup. No signup. Just answers and a clear, actionable report.
+            Sin configuración técnica. Sin registro. Solo respuestas y un reporte claro y accionable.
           </p>
         </div>
 

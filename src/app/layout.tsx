@@ -8,9 +8,21 @@ const geist = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "AI Local Visibility Scanner — Will AI Recommend Your Business?",
+  title: "Escaneo de Visibilidad en Recomendaciones de IA — AI Recommendation Visibility Scan",
   description:
-    "Run a quick visibility scan and get an AI Findability Score. Find out if AI assistants can understand, trust, and recommend your local business.",
+    "Descubrí si tu negocio tiene las señales de claridad, confianza y relevancia que ayudan a ser entendido, comparado y considerado en recomendaciones generadas por inteligencia artificial.",
+  openGraph: {
+    title: "Escaneo de Visibilidad en Recomendaciones de IA",
+    description:
+      "Descubrí si tu negocio tiene las señales de claridad, confianza y relevancia que ayudan a ser entendido, comparado y considerado en recomendaciones generadas por inteligencia artificial.",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Escaneo de Visibilidad en Recomendaciones de IA",
+    description:
+      "Descubrí si tu negocio tiene las señales de claridad, confianza y relevancia que ayudan a ser entendido, comparado y considerado en recomendaciones generadas por inteligencia artificial.",
+  },
 };
 
 export default function RootLayout({
@@ -19,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} h-full antialiased`}>
+    <html lang="es" className={`${geist.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

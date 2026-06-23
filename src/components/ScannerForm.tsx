@@ -233,13 +233,13 @@ export default function ScannerForm({ onSubmit }: ScannerFormProps) {
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">AI Visibility Scanner</p>
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Escaneo de Visibilidad en Recomendaciones de IA</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Scan your business{' '}
-            <span className="gradient-text">right now</span>
+            Escaneá tu negocio{' '}
+            <span className="gradient-text">ahora mismo</span>
           </h2>
           <p className="text-slate-400 text-lg">
-            Answer 20 quick questions. Get your score in seconds.
+            Respondé 20 preguntas rápidas. Obtenés tu puntaje en segundos.
           </p>
         </div>
 
@@ -429,11 +429,11 @@ export default function ScannerForm({ onSubmit }: ScannerFormProps) {
               {loading ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Calculating your score…
+                  Calculando tu puntaje…
                 </>
               ) : (
                 <>
-                  Get My AI Findability Score
+                  Obtener mi Puntaje de Visibilidad en Recomendaciones de IA
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </>
               )}

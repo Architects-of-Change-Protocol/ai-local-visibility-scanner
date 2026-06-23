@@ -4,26 +4,26 @@ const pains = [
   {
     icon: Bot,
     color: 'emerald',
-    title: 'Customers ask AI for recommendations',
-    body: 'Instead of typing into Google, millions of customers now ask ChatGPT, Gemini, Perplexity, or Siri: "Who is the best plumber in my area?" Your business needs to be the answer.',
+    title: 'Los clientes le piden recomendaciones a la IA',
+    body: 'En lugar de buscar en Google, millones de clientes ahora le preguntan a ChatGPT, Gemini, Perplexity o Siri: "¿Quién es el mejor plomero cerca de mí?" Tu negocio necesita aparecer como una opción recomendable.',
   },
   {
     icon: Layers,
     color: 'blue',
-    title: 'AI summarizes instead of showing links',
-    body: 'AI tools don\'t list ten options. They pick one or two, summarize why they\'re trustworthy, and present them as the answer. If you\'re not clear, you\'re not chosen.',
+    title: 'La IA resume en lugar de mostrar links',
+    body: 'Las herramientas de IA no listan diez opciones. Eligen una o dos, explican por qué son confiables y las presentan como la respuesta. Si no sos claro, no sos elegido.',
   },
   {
     icon: EyeOff,
     color: 'purple',
-    title: 'Unclear businesses get ignored',
-    body: 'If your website, Google profile, and content don\'t clearly explain what you do, who you serve, and where — AI systems move on to a competitor that does.',
+    title: 'Los negocios poco claros son ignorados',
+    body: 'Si tu sitio web, perfil de Google y contenido no explican claramente qué hacés, a quién servís y dónde — los sistemas de IA pasan al competidor que sí lo hace.',
   },
   {
     icon: ShieldCheck,
     color: 'rose',
-    title: 'Trust signals matter more than ever',
-    body: 'AI systems weigh reviews, structured data, consistent NAP information, and clear service descriptions. Missing any of these is a red flag that costs you recommendations.',
+    title: 'Las señales de confianza importan más que nunca',
+    body: 'Los sistemas de IA evalúan reseñas, datos estructurados, información NAP consistente y descripciones de servicios claras. Que falte alguna de estas señales es una barrera que te cuesta recomendaciones.',
   },
 ];
 
@@ -43,14 +43,14 @@ export default function PainSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <p className="text-rose-400 font-semibold text-sm uppercase tracking-wider mb-3">The problem</p>
+          <p className="text-rose-400 font-semibold text-sm uppercase tracking-wider mb-3">El problema</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Four ways AI search is{' '}
-            <span className="gradient-text">leaving businesses behind</span>
+            Cuatro razones por las que la IA está{' '}
+            <span className="gradient-text">dejando negocios afuera</span>
           </h2>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-            Most local businesses have no idea how AI systems evaluate them — or that they&#39;re
-            already losing customers to better-optimized competitors.
+            La mayoría de los negocios locales no saben cómo los evalúan los sistemas de IA — ni
+            que ya están perdiendo clientes frente a competidores mejor posicionados.
           </p>
         </div>
 

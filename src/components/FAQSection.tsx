@@ -5,24 +5,24 @@ import { ChevronDown } from 'lucide-react';
 
 const faqs = [
   {
-    q: 'Does this guarantee that ChatGPT will recommend my business?',
-    a: 'No. The scanner helps identify signals that make your business clearer, more trustworthy, and easier for search engines and AI systems to understand. No tool or service can guarantee AI recommendations — AI systems make their own determinations. What we can do is help you remove the barriers that cause AI to skip or misrepresent your business.',
+    q: '¿Esto garantiza que ChatGPT va a recomendar mi negocio?',
+    a: 'No. El escaneo ayuda a identificar las señales que hacen tu negocio más claro, confiable y fácil de entender para sistemas de IA. Ninguna herramienta puede garantizar que un sistema de IA te recomiende — esa determinación la toma la IA. Lo que sí podemos hacer es ayudarte a eliminar las barreras que hacen que la IA ignore o malinterprete tu negocio.',
   },
   {
-    q: 'Is this SEO?',
-    a: 'It includes SEO fundamentals, but the focus goes further. AI-era visibility is about clarity, trust, structured business information, and answering real customer questions — not just ranking for keywords. Think of it as the next layer on top of traditional local SEO.',
+    q: '¿Esto es SEO?',
+    a: 'Incluye fundamentos de SEO, pero el enfoque va más allá. La visibilidad en recomendaciones de IA se trata de claridad, confianza, información estructurada y responder preguntas reales de los clientes — no solo de rankear por palabras clave. Pensalo como la siguiente capa sobre el SEO local tradicional.',
   },
   {
-    q: 'Do I need a new website?',
-    a: 'Not always. Many of the highest-impact improvements — adding FAQs, testimonials, service area details, pricing ranges, and schema markup — can be added to your existing website without a redesign. A new site is rarely the first priority.',
+    q: '¿Necesito un sitio web nuevo?',
+    a: 'Casi nunca. Muchas de las mejoras de mayor impacto — agregar FAQs, testimonios, detalles del área de servicio, rangos de precios y schema markup — se pueden incorporar al sitio web que ya tenés sin necesidad de un rediseño. Un sitio nuevo rara vez es la primera prioridad.',
   },
   {
-    q: 'Can agencies use this tool?',
-    a: 'Yes. Agencies can use the AI Local Visibility Scanner as a lead generation and diagnostic tool for local clients. Run a scan during a sales call to immediately demonstrate gaps and opportunities. Our Pro Audit and Done-For-You tiers are structured to work well with agency workflows.',
+    q: '¿Las agencias pueden usar esta herramienta?',
+    a: 'Sí. Las agencias pueden usar el Escaneo de Visibilidad en Recomendaciones de IA como herramienta de generación de leads y diagnóstico para clientes locales. Corré un escaneo durante una llamada de ventas para demostrar de inmediato las brechas y oportunidades. Nuestros planes Pro y de Implementación Completa están diseñados para flujos de trabajo de agencias.',
   },
   {
-    q: 'How long does the scan take?',
-    a: 'Less than 2 minutes. The form asks 20 yes/no and fill-in questions about your current online presence. No logins, no integrations, no technical setup required. Your score is instant.',
+    q: '¿Cuánto tarda el escaneo?',
+    a: 'Menos de 2 minutos. El formulario hace 20 preguntas de sí/no y de completar sobre tu presencia digital actual. Sin logins, sin integraciones, sin configuración técnica. Tu puntaje es instantáneo.',
   },
 ];
 
@@ -54,10 +54,10 @@ export default function FAQSection() {
     <section id="faq" className="py-24 relative">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-blue-400 font-semibold text-sm uppercase tracking-wider mb-3">FAQ</p>
+          <p className="text-blue-400 font-semibold text-sm uppercase tracking-wider mb-3">Preguntas frecuentes</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            Common questions,{' '}
-            <span className="gradient-text">honest answers</span>
+            Preguntas frecuentes,{' '}
+            <span className="gradient-text">respuestas honestas</span>
           </h2>
         </div>
 

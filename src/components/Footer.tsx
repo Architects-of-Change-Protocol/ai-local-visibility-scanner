@@ -10,24 +10,24 @@ export default function Footer() {
             <div className="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-emerald-400" />
             </div>
-            <span className="text-white font-bold">AI Local Visibility Scanner</span>
+            <span className="text-white font-bold">AI Recommendation Visibility Scan</span>
           </div>
 
           <nav className="flex flex-wrap justify-center gap-6 text-sm">
-            <a href="#scanner" className="text-slate-400 hover:text-white transition-colors">Scanner</a>
-            <a href="#sample" className="text-slate-400 hover:text-white transition-colors">Sample Report</a>
-            <a href="#pricing" className="text-slate-400 hover:text-white transition-colors">Pricing</a>
+            <a href="#scanner" className="text-slate-400 hover:text-white transition-colors">Escanear</a>
+            <a href="#sample" className="text-slate-400 hover:text-white transition-colors">Ejemplo de reporte</a>
+            <a href="#pricing" className="text-slate-400 hover:text-white transition-colors">Precios</a>
             <a href="#faq" className="text-slate-400 hover:text-white transition-colors">FAQ</a>
-            <a href={LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">Contact</a>
+            <a href={LINKS.whatsapp} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors">Contacto</a>
           </nav>
         </div>
 
         <div className="border-t border-white/5 pt-8 text-center">
           <p className="text-slate-600 text-xs max-w-2xl mx-auto leading-relaxed">
-            This tool provides an educational visibility assessment. It does not guarantee rankings, citations, or recommendations from any AI system or search engine. Results are based on self-reported data and should be used as a directional guide only.
+            Esta herramienta proporciona una evaluación educativa de visibilidad. No garantiza posiciones, citas ni recomendaciones de ningún sistema de IA o motor de búsqueda. Los resultados se basan en datos auto-reportados y deben usarse únicamente como guía orientativa.
           </p>
           <p className="text-slate-700 text-xs mt-4">
-            © {new Date().getFullYear()} AI Local Visibility Scanner. All rights reserved.
+            © {new Date().getFullYear()} AI Recommendation Visibility Scan. Todos los derechos reservados.
           </p>
         </div>
       </div>

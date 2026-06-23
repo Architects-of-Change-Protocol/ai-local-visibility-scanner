@@ -1,27 +1,27 @@
 import { AlertTriangle, XCircle, CheckCircle } from 'lucide-react';
 
 const sampleCategories = [
-  { label: 'Business Profile', score: 12, maxScore: 15 },
-  { label: 'Review Trust', score: 13, maxScore: 15 },
-  { label: 'Website Clarity', score: 10, maxScore: 20 },
-  { label: 'Conversion Readiness', score: 5, maxScore: 10 },
-  { label: 'Content Usefulness', score: 7, maxScore: 15 },
-  { label: 'Proof & Authenticity', score: 10, maxScore: 15 },
-  { label: 'Technical & AI Readiness', score: 5, maxScore: 10 },
+  { label: 'Perfil del negocio', score: 12, maxScore: 15 },
+  { label: 'Confianza en reseñas', score: 13, maxScore: 15 },
+  { label: 'Claridad del sitio web', score: 10, maxScore: 20 },
+  { label: 'Preparación para conversión', score: 5, maxScore: 10 },
+  { label: 'Utilidad del contenido', score: 7, maxScore: 15 },
+  { label: 'Prueba y autenticidad', score: 10, maxScore: 15 },
+  { label: 'Preparación técnica para IA', score: 5, maxScore: 10 },
 ];
 
 const weaknesses = [
-  'No dedicated service pages (e.g. /teeth-whitening, /dental-implants)',
-  'No FAQ section addressing common pre-appointment questions',
-  'Good Google reviews but none featured as testimonials on the website',
-  'No clear service area page listing covered neighborhoods',
-  'No LocalBusiness or Service schema detected',
+  'Sin páginas dedicadas por servicio (ej. /blanqueamiento, /implantes-dentales)',
+  'Sin sección de FAQ que responda preguntas previas a la consulta',
+  'Buenas reseñas de Google pero ninguna usada como testimonio en el sitio web',
+  'Sin página clara de área de cobertura geográfica',
+  'Sin schema de LocalBusiness o Service detectado',
 ];
 
 const strengths = [
-  'Google Business Profile fully completed with photos',
-  '87 Google reviews with a 4.8 average rating',
-  'Clear services page listing core treatments',
+  'Google Business Profile completo con fotos',
+  '87 reseñas de Google con promedio de 4.8 estrellas',
+  'Página de servicios clara con los tratamientos principales',
 ];
 
 export default function SampleReport() {
@@ -33,14 +33,14 @@ export default function SampleReport() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <p className="text-purple-400 font-semibold text-sm uppercase tracking-wider mb-3">Sample Report</p>
+          <p className="text-purple-400 font-semibold text-sm uppercase tracking-wider mb-3">Ejemplo de reporte</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            See what a real scan{' '}
-            <span className="gradient-text">looks like</span>
+            Mirá cómo se ve un{' '}
+            <span className="gradient-text">escaneo real</span>
           </h2>
           <p className="text-slate-400 text-lg max-w-xl mx-auto">
-            Here&#39;s a sample report for a local dental clinic — a common scenario we see with
-            established businesses that are findable but not yet AI-ready.
+            Este es un ejemplo de reporte para una clínica dental local — un caso común: negocios
+            consolidados que son encontrables pero aún no están listos para ser recomendados por IA.
           </p>
         </div>
 
@@ -49,9 +49,9 @@ export default function SampleReport() {
           <div className="bg-gradient-to-r from-slate-900 to-slate-800 px-6 sm:px-8 py-6 border-b border-white/8">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">AI Findability Report</p>
+                <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Puntaje de Visibilidad en Recomendaciones de IA</p>
                 <h3 className="text-xl font-bold text-white">Escazú Dental Studio</h3>
-                <p className="text-slate-400 text-sm mt-0.5">San José, Costa Rica · Dental Clinic</p>
+                <p className="text-slate-400 text-sm mt-0.5">San José, Costa Rica · Clínica dental</p>
               </div>
               <div className="text-center sm:text-right">
                 <div className="text-5xl font-bold gradient-text">62</div>
@@ -60,14 +60,14 @@ export default function SampleReport() {
             </div>
             <div className="mt-4 inline-flex items-center gap-2 bg-yellow-500/10 border border-yellow-500/20 rounded-full px-4 py-1.5">
               <AlertTriangle className="w-3.5 h-3.5 text-yellow-400" />
-              <span className="text-yellow-300 text-sm font-medium">Visible, but not AI-ready</span>
+              <span className="text-yellow-300 text-sm font-medium">Visible, pero aún no recomendable por IA</span>
             </div>
           </div>
 
           <div className="p-6 sm:p-8 space-y-8">
             {/* Score bars */}
             <div>
-              <h4 className="text-white font-semibold mb-5">Score Breakdown</h4>
+              <h4 className="text-white font-semibold mb-5">Desglose del puntaje</h4>
               <div className="space-y-4">
                 {sampleCategories.map((cat) => {
                   const pct = Math.round((cat.score / cat.maxScore) * 100);
@@ -92,7 +92,7 @@ export default function SampleReport() {
               <div>
                 <h4 className="text-emerald-400 font-semibold mb-3 flex items-center gap-2">
                   <CheckCircle className="w-4 h-4" />
-                  What&#39;s working
+                  Lo que está funcionando
                 </h4>
                 <ul className="space-y-2">
                   {strengths.map((s) => (
@@ -106,7 +106,7 @@ export default function SampleReport() {
               <div>
                 <h4 className="text-rose-400 font-semibold mb-3 flex items-center gap-2">
                   <XCircle className="w-4 h-4" />
-                  Weak areas
+                  Áreas débiles
                 </h4>
                 <ul className="space-y-2">
                   {weaknesses.map((w) => (
@@ -121,7 +121,7 @@ export default function SampleReport() {
 
             <div className="bg-slate-900/60 rounded-xl p-4 border border-slate-800">
               <p className="text-sm text-slate-400 leading-relaxed">
-                <strong className="text-white">Summary:</strong> Escazú Dental Studio has strong review signals and a complete Google profile, but lacks the structured content and AI-readable signals that would allow AI assistants to confidently recommend it. Focused improvements to service pages, FAQ content, and schema could realistically move this score to 82+ within 30 days.
+                <strong className="text-white">Resumen:</strong> Escazú Dental Studio tiene señales de reseñas sólidas y un perfil de Google completo, pero carece del contenido estructurado y las señales legibles por IA que permitirían a los asistentes de IA recomendarlo con confianza. Mejoras focalizadas en páginas de servicios, contenido FAQ y schema podrían mover este puntaje a 82+ en 30 días.
               </p>
             </div>
           </div>

@@ -4,52 +4,55 @@ import { LINKS } from '@/lib/constants';
 const plans = [
   {
     icon: Zap,
-    name: 'Starter Report',
+    name: 'Reporte Inicial',
+    nameEn: 'Starter Report',
     price: '$29',
     badge: null,
-    description: 'Best for owners who want to DIY',
+    description: 'Ideal para dueños que quieren entender qué mejorar',
     features: [
-      'Full AI Findability report',
-      'Priority checklist',
-      '7-day action plan',
-      'PDF export',
+      'Puntaje completo de visibilidad en recomendaciones de IA',
+      'Checklist priorizado',
+      'Plan de acción de 7 días',
+      'Exportación en PDF',
     ],
-    cta: 'Get Starter Report',
+    cta: 'Obtener Reporte Inicial',
     href: LINKS.stripe,
     highlight: false,
   },
   {
     icon: Star,
-    name: 'Pro Audit',
+    name: 'Auditoría Pro',
+    nameEn: 'Pro Audit',
     price: '$99',
-    badge: 'Most Popular',
-    description: 'Best for serious local businesses',
+    badge: 'Más popular',
+    description: 'Para negocios locales que toman en serio su visibilidad',
     features: [
-      'Manual review of website & GBP',
-      'Competitor comparison',
-      'Personalized recommendations',
-      'Video walkthrough',
-      '30-day follow-up check',
+      'Revisión manual del sitio web y Google Business Profile',
+      'Comparación con competidores',
+      'Recomendaciones personalizadas',
+      'Video explicativo',
+      'Seguimiento a 30 días',
     ],
-    cta: 'Book Pro Audit',
+    cta: 'Reservar Auditoría Pro',
     href: LINKS.calendly,
     highlight: true,
   },
   {
     icon: Wrench,
-    name: 'Done-For-You Setup',
-    price: 'from $499',
+    name: 'Implementación Completa',
+    nameEn: 'Done-For-You Setup',
+    price: 'desde $499',
     badge: null,
-    description: 'Best for businesses that want implementation',
+    description: 'Para negocios que quieren que alguien más lo haga',
     features: [
-      'Website copy improvements',
-      'FAQ section creation',
-      'Local service pages',
-      'CTA improvements',
-      'Structured content recommendations',
-      'Schema markup setup',
+      'Mejoras de copy en el sitio web',
+      'Sección de preguntas frecuentes',
+      'Páginas de servicios locales',
+      'Mejoras de CTA',
+      'Recomendaciones de contenido estructurado',
+      'Configuración de schema markup',
     ],
-    cta: 'Start Done-For-You',
+    cta: 'Iniciar Implementación',
     href: LINKS.calendly,
     highlight: false,
   },
@@ -64,13 +67,13 @@ export default function Pricing() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Pricing</p>
+          <p className="text-emerald-400 font-semibold text-sm uppercase tracking-wider mb-3">Precios</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-            From insight to{' '}
-            <span className="gradient-text">implementation</span>
+            De la visibilidad a la{' '}
+            <span className="gradient-text">implementación</span>
           </h2>
           <p className="text-slate-400 text-lg max-w-xl mx-auto">
-            Choose the level of support that matches where you are and what you need to move forward.
+            Elegí el nivel de apoyo que más se ajusta a donde estás y lo que necesitás para avanzar.
           </p>
         </div>
 
