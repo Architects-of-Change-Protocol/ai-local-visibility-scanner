@@ -104,7 +104,7 @@ export default function Hero({ onScanClick, onSampleClick }: HeroProps) {
                 onClick={onScanClick}
                 className="group flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-8 py-4 rounded-xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/25"
               >
-                Escanear mi negocio
+                Escanear mi negocio — $30
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
@@ -117,7 +117,7 @@ export default function Hero({ onScanClick, onSampleClick }: HeroProps) {
             </div>
 
             <p className="text-sm text-slate-500">
-              Sin registro. Menos de 2 minutos.
+              Pago seguro con Stripe. Resultado desbloqueado después del pago.
             </p>
           </div>
 

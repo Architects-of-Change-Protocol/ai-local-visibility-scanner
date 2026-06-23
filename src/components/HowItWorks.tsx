@@ -32,7 +32,7 @@ export default function HowItWorks() {
             <span className="gradient-text">en tres pasos</span>
           </h2>
           <p className="text-slate-400 text-lg max-w-xl mx-auto">
-            Sin configuración técnica. Sin registro. Solo respuestas y un reporte claro y accionable.
+            Sin configuración técnica. Solo respondés las preguntas y obtenés un reporte claro y accionable.
           </p>
         </div>
 

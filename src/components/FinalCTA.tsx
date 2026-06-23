@@ -30,11 +30,11 @@ export default function FinalCTA({ onScanClick }: FinalCTAProps) {
           onClick={onScanClick}
           className="group inline-flex items-center gap-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-lg px-10 py-5 rounded-2xl transition-all duration-200 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/30"
         >
-          Escanear mi negocio
+          Escanear mi negocio — $30
           <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </button>
 
-        <p className="text-slate-600 text-sm mt-6">Sin registro. Menos de 2 minutos.</p>
+        <p className="text-slate-500 text-sm mt-6">Pago seguro con Stripe. Resultado desbloqueado después del pago.</p>
       </div>
     </section>
   );

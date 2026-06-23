@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: '¿Cuánto tarda el escaneo?',
-    a: 'Menos de 2 minutos. El formulario hace 20 preguntas de sí/no y de completar sobre tu presencia digital actual. Sin logins, sin integraciones, sin configuración técnica. Tu puntaje es instantáneo.',
+    a: 'Menos de 2 minutos. El formulario hace 20 preguntas de sí/no y de completar sobre tu presencia digital actual. Sin integraciones, sin configuración técnica. Tu resultado se desbloquea después del pago.',
   },
 ];
 

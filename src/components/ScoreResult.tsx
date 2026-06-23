@@ -173,22 +173,22 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
           </div>
         </div>
 
-        {/* Monetization CTA */}
+        {/* Upsell CTA */}
         <div className="glass-strong rounded-2xl p-8 gradient-border">
           <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-white mb-2">¿Querés el plan de acción completo de visibilidad en recomendaciones de IA?</h3>
-            <p className="text-slate-400">
-              Podemos convertir este escaneo en un plan práctico de 7 días para mejorar la visibilidad de tu negocio en recomendaciones de IA.
+            <h3 className="text-2xl font-bold text-white mb-2">¿Querés que implementemos las mejoras?</h3>
+            <p className="text-slate-400 max-w-xl mx-auto">
+              Ya tenés el diagnóstico. Podemos ayudarte a convertir estas prioridades en mejoras concretas para que tu negocio sea más claro, confiable y visible en recomendaciones de IA.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href={LINKS.stripe}
+              href={LINKS.calendly}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3.5 rounded-xl transition-all duration-200 hover:scale-105"
             >
-              Obtener Reporte Completo — $29
+              Agendar Auditoría Pro — $99
               <ExternalLink className="w-4 h-4" />
             </a>
             <a
@@ -197,7 +197,7 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 glass hover:bg-white/10 text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 border border-white/10"
             >
-              Reservar Implementación Completa
+              Cotizar Implementación
             </a>
             <a
               href={LINKS.whatsapp}
@@ -205,7 +205,7 @@ export default function ScoreResult({ result, businessName }: ScoreResultProps) 
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 glass hover:bg-white/10 text-white font-semibold px-6 py-3.5 rounded-xl transition-all duration-200 border border-white/10"
             >
-              Enviar resultados por WhatsApp
+              Enviar resultado por WhatsApp
             </a>
           </div>
         </div>

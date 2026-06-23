@@ -1,28 +1,41 @@
 import { Check, Zap, Star, Wrench } from 'lucide-react';
 import { LINKS } from '@/lib/constants';
 
-const plans = [
+interface Plan {
+  icon: React.ElementType;
+  name: string;
+  price: string;
+  badge: string | null;
+  description: string;
+  features: string[];
+  cta: string;
+  href: string;
+  highlight: boolean;
+  isAnchor?: boolean;
+}
+
+const plans: Plan[] = [
   {
     icon: Zap,
-    name: 'Reporte Inicial',
-    nameEn: 'Starter Report',
-    price: '$29',
-    badge: null,
-    description: 'Ideal para dueños que quieren entender qué mejorar',
+    name: 'Escaneo Inicial',
+    price: '$30',
+    badge: 'Punto de entrada',
+    description: 'Completá el formulario y desbloqueá tu resultado',
     features: [
-      'Puntaje completo de visibilidad en recomendaciones de IA',
-      'Checklist priorizado',
-      'Plan de acción de 7 días',
-      'Exportación en PDF',
+      'Puntaje de Visibilidad en Recomendaciones de IA',
+      'Señales fuertes y débiles',
+      'Prioridades recomendadas',
+      'Plan inicial de mejora',
+      'Resultado desbloqueado después del pago',
     ],
-    cta: 'Obtener Reporte Inicial',
-    href: LINKS.stripe,
+    cta: 'Escanear mi negocio — $30',
+    href: '#scanner',
     highlight: false,
+    isAnchor: true,
   },
   {
     icon: Star,
     name: 'Auditoría Pro',
-    nameEn: 'Pro Audit',
     price: '$99',
     badge: 'Más popular',
     description: 'Para negocios locales que toman en serio su visibilidad',
@@ -40,7 +53,6 @@ const plans = [
   {
     icon: Wrench,
     name: 'Implementación Completa',
-    nameEn: 'Done-For-You Setup',
     price: 'desde $499',
     badge: null,
     description: 'Para negocios que quieren que alguien más lo haga',
@@ -52,11 +64,18 @@ const plans = [
       'Recomendaciones de contenido estructurado',
       'Configuración de schema markup',
     ],
-    cta: 'Iniciar Implementación',
+    cta: 'Cotizar Implementación',
     href: LINKS.calendly,
     highlight: false,
   },
 ];
+
+const ctaClass = (highlight: boolean) =>
+  `block text-center font-bold py-3.5 rounded-xl transition-all duration-200 hover:scale-105 ${
+    highlight
+      ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950'
+      : 'glass border border-white/10 text-white hover:bg-white/10'
+  }`;
 
 export default function Pricing() {
   return (
@@ -73,7 +92,7 @@ export default function Pricing() {
             <span className="gradient-text">implementación</span>
           </h2>
           <p className="text-slate-400 text-lg max-w-xl mx-auto">
-            Elegí el nivel de apoyo que más se ajusta a donde estás y lo que necesitás para avanzar.
+            Empezá con el escaneo y sumá apoyo según lo que necesitás para mejorar.
           </p>
         </div>
 
@@ -91,7 +110,7 @@ export default function Pricing() {
               >
                 {plan.badge && (
                   <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span className="bg-emerald-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full">
+                    <span className="bg-emerald-500 text-slate-950 text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">
                       {plan.badge}
                     </span>
                   </div>
@@ -115,18 +134,20 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                <a
-                  href={plan.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`block text-center font-bold py-3.5 rounded-xl transition-all duration-200 hover:scale-105 ${
-                    plan.highlight
-                      ? 'bg-emerald-500 hover:bg-emerald-400 text-slate-950'
-                      : 'glass border border-white/10 text-white hover:bg-white/10'
-                  }`}
-                >
-                  {plan.cta}
-                </a>
+                {plan.isAnchor ? (
+                  <a href={plan.href} className={ctaClass(plan.highlight)}>
+                    {plan.cta}
+                  </a>
+                ) : (
+                  <a
+                    href={plan.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={ctaClass(plan.highlight)}
+                  >
+                    {plan.cta}
+                  </a>
+                )}
               </div>
             );
           })}
